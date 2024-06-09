@@ -1,4 +1,5 @@
-import Generate from './components/codeGenerator.js';
+import GenerateCode from './components/codeGenerator.js';
+import FixBug from './components/bugFixer.js';
 import React, {useEffect} from 'react';
 import { Link, BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Nav from './components/nav.js';
@@ -22,8 +23,9 @@ function App() {
       <Nav />
         
         <Routes>
-          <Route path="/generatecode" element={<Generate />} />
           <Route path="/" element={<Home />} />
+          <Route path="/generatecode" element={<GenerateCode />} />
+          <Route path="/fixcode" element={<FixBug />} />
         </Routes>
       </div>
     </Router>

@@ -7,7 +7,7 @@ import 'prismjs/themes/prism-tomorrow.css';
 import { FiCopy, FiEdit, FiEye } from 'react-icons/fi';
 import './codeBlock.css';
 
-const Code_Block = ({ initialCode , fileName = 'index.js' , language = 'javascript', hasError=false }) => {
+const Code_Block = ({ initialCode , fileName = '' , language = 'javascript', hasError=false, showFileName=true }) => {
   const [isEditable, setIsEditable] = useState(false);
   const [code, setCode] = useState(initialCode);
   useEffect(() => {
@@ -23,8 +23,12 @@ const Code_Block = ({ initialCode , fileName = 'index.js' , language = 'javascri
   return (
     <div className="container p-3 rounded bg-dark text-light">
       <div className="d-flex relative justify-content-between mb-2">
-        <h3 className="text-gray-100 relative px-4 bg-gray-600 text-sm py-0.5 rounded inline-block">{fileName}</h3>
-        <div className="flex justify-center absolute right-1 top-1 gap-4 inline-block">
+        {showFileName && (
+            <h3 className="text-gray-100 relative px-4 bg-gray-600 text-sm py-0.5 rounded inline-block">
+                {fileName}
+            </h3>
+          )}
+        <div className={`flex justify-end gap-3 inline-block ${showFileName ? 'absolute top-2 right-1' : 'sticky me-1'}`}>
           <button className="btn btn-primary text-gray-100" onClick={handleCopy}>
             <FiCopy />
           </button>
