@@ -1,0 +1,98 @@
+```php
+<?php
+
+// Include a separate file for database connection details (improves security)
+require_once 'db_connect.php';
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+  $errors = array(); // Initialize an empty array to store errors
+
+  // Escape special characters from form data to prevent SQL injection
+  $username = mysqli_real_escape_string($conn, $_POST['username']);
+  $email = mysqli_real_escape_string($conn, $_POST['email']);
+  $name = mysqli_real_escape_string($conn, $_POST['name']);
+  $phone = mysqli_real_escape_string($conn, $_POST['phone']);
+  $password = mysqli_real_escape_string($conn, $_POST['password']);
+
+  // Form validation (basic example)
+  if (empty($username)) {
+    array_push($errors, "Username is required");
+  }
+  if (empty($email)) {
+    array_push($errors, "Email is required");
+  }
+  if (empty($name)) {
+    array_push($errors, "Name is required");
+  }
+  if (empty($phone)) {
+    array_push($errors, "Phone number is required");
+  }
+  if (empty($password)) {
+    array_push($errors, "Password is required");
+  }
+
+  // Check if email already exists (basic example)
+  $email_check_query = "SELECT * FROM users WHERE email='$email'";
+  $result = mysqli_query($conn, $email_check_query);
+  $email_count = mysqli_num_rows($result);
+  if ($email_count > 0) {
+    array_push($errors, "Email already exists");
+  }
+
+  // Hash password before storing in database
+  $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+  // If no errors, insert user data into database
+  if (empty($errors)) {
+    $sql = "INSERT INTO users (username, email, name, phone, password) VALUES ('$username', '$email', '$name', '$phone', '$hashed_password')";
+    $result = mysqli_query($conn, $sql);
+    if ($result) {
+      echo "Registration successful!";
+    } else {
+      echo "Error: " . mysqli_error($conn);
+    }
+  } else {
+    // Display errors if any
+    echo "Please fix the following errors: <br>";
+    foreach ($errors as $error) {
+      echo "- $error <br>";
+    }
+  }
+}
+
+mysqli_close($conn); // Close connection
+
+?>
+
+<form method="post">
+  <div>
+    <label for="username">Username:</label>
+    <input type="text" name="username" id="username">
+  </div>
+  <div>
+    <label for="email">Email:</label>
+    <input type="email" name="email" id="email">
+  </div>
+  <div>
+    <label for="name">Name:</label>
+    <input type="text" name="name" id="name">
+  </div>
+  <div>
+    <label for="phone">Phone Number:</label>
+    <input type="tel" name="phone" id="phone">
+  </div>
+  <div>
+    <label for="password">Password:</label>
+    <input type="password" name="password" id="password">
+  </div>
+  <div>
+    <button type="submit">Register</button>
+  </div>
+</form>
+```
+
+```json
+{
+  "filename": "register.php"
+}
+```
