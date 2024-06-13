@@ -1,5 +1,4 @@
 import {PurpleBtn} from './buttons.js'
-import { Link } from 'react-router-dom';
 
 function Home(){
   const tools = [
