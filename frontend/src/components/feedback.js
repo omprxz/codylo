@@ -38,7 +38,7 @@ export default function FeedBack(){
   }
   const sendEmail = async (subject, textContent, recipientEmail, from, passPath) => {
   try {
-    const response = await axios.post('https://backend-7vn0zmsx0-omprxzs-projects.vercel.app/sendFeedbackMail', {
+    const response = await axios.post('https://codylo-backend.vercel.app/sendFeedbackMail', {
       subject: subject,
       textContent: textContent,
       recipientEmail: recipientEmail,
