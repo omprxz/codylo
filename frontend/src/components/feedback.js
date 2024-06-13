@@ -46,7 +46,7 @@ export default function FeedBack(){
       passPath: passPath
     });
   } catch (error) {
-    console.error('Failed to send email:', error.response ? error.response.data : error.message);
+    setErrMsg('Failed to send email:', error.response ? error.response.data : error.message);
   }
 };
   
