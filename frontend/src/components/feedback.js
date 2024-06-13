@@ -37,6 +37,7 @@ export default function FeedBack(){
   return re.test(email);
   }
   const sendEmail = async (subject, textContent, recipientEmail, from, passPath) => {
+    setFbSending(true)
   try {
     const response = await axios.post('https://codylo-backend.vercel.app/sendFeedbackMail', {
       subject: subject,
@@ -48,10 +49,10 @@ export default function FeedBack(){
   } catch (error) {
     setErrMsg('Failed to send email:', error.response ? error.response.data : error.message);
   }
+    setFbSending(false)
 };
   
   const sendFeedback = () => {
-    setFbSending(true)
     if( !fbName || !fbEmail || !fbText){
       setErrMsg('All fields mandatory')
       return;
@@ -66,8 +67,6 @@ export default function FeedBack(){
     `;
     
     sendEmail(subject, content, 'omprxz@gmail.com', 'ompkr69@gmail.com', 'GMAIL_APP_PASSWORD_FB')
-  
-    setFbSending(false)
   }
   
   return(
