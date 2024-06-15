@@ -1,11 +1,13 @@
 import { Link } from 'react-router-dom';
 
 function DefaultBtn({ tag = 'button', to = '', text = 'Default', className = '' }) {
+  const baseClasses = `border focus:ring-4 focus:outline-none font-medium rounded-lg px-5 py-2.5 text-center mb-2`;
+
   if (tag === 'Link') {
     return (
       <Link
         to={to}
-        className={`text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-5 py-2.5 text-center mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800 ${className}`}
+        className={`${baseClasses} border-blue-500 text-blue-500 hover:text-white hover:bg-blue-500 focus:ring-blue-800 ${className}`}
       >
         {text}
       </Link>
@@ -14,7 +16,7 @@ function DefaultBtn({ tag = 'button', to = '', text = 'Default', className = '' 
     return (
       <a
         href={to}
-        className={`text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-5 py-2.5 text-center mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800 ${className}`}
+        className={`${baseClasses} border-blue-500 text-blue-500 hover:text-white hover:bg-blue-500 focus:ring-blue-800 ${className}`}
       >
         {text}
       </a>
@@ -23,7 +25,7 @@ function DefaultBtn({ tag = 'button', to = '', text = 'Default', className = '' 
     return (
       <button
         type="button"
-        className={`text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-5 py-2.5 text-center mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800 ${className}`}
+        className={`${baseClasses} border-blue-500 text-blue-500 hover:text-white hover:bg-blue-500 focus:ring-blue-800 ${className}`}
       >
         {text}
       </button>
@@ -32,11 +34,13 @@ function DefaultBtn({ tag = 'button', to = '', text = 'Default', className = '' 
 }
 
 function DarkBtn({ tag = 'button', to = '', text = 'Dark', className = '' }) {
+  const baseClasses = `border focus:ring-4 focus:outline-none font-medium rounded-lg px-5 py-2.5 text-center mb-2`;
+
   if (tag === 'Link') {
     return (
       <Link
         to={to}
-        className={`text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg px-5 py-2.5 text-center mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800 ${className}`}
+        className={`${baseClasses} border-gray-600 text-gray-400 hover:text-white hover:bg-gray-600 focus:ring-gray-800 ${className}`}
       >
         {text}
       </Link>
@@ -45,7 +49,7 @@ function DarkBtn({ tag = 'button', to = '', text = 'Dark', className = '' }) {
     return (
       <a
         href={to}
-        className={`text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg px-5 py-2.5 text-center mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800 ${className}`}
+        className={`${baseClasses} border-gray-600 text-gray-400 hover:text-white hover:bg-gray-600 focus:ring-gray-800 ${className}`}
       >
         {text}
       </a>
@@ -54,7 +58,7 @@ function DarkBtn({ tag = 'button', to = '', text = 'Dark', className = '' }) {
     return (
       <button
         type="button"
-        className={`text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg px-5 py-2.5 text-center mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800 ${className}`}
+        className={`${baseClasses} border-gray-600 text-gray-400 hover:text-white hover:bg-gray-600 focus:ring-gray-800 ${className}`}
       >
         {text}
       </button>
@@ -63,11 +67,13 @@ function DarkBtn({ tag = 'button', to = '', text = 'Dark', className = '' }) {
 }
 
 function GreenBtn({ tag = 'button', to = '', text = 'Green', className = '' }) {
+  const baseClasses = `border focus:ring-4 focus:outline-none font-medium rounded-lg px-5 py-2.5 text-center mb-2`;
+
   if (tag === 'Link') {
     return (
       <Link
         to={to}
-        className={`text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg px-5 py-2.5 text-center mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800 ${className}`}
+        className={`${baseClasses} border-green-500 text-green-500 hover:text-white hover:bg-green-600 focus:ring-green-800 ${className}`}
       >
         {text}
       </Link>
@@ -76,7 +82,7 @@ function GreenBtn({ tag = 'button', to = '', text = 'Green', className = '' }) {
     return (
       <a
         href={to}
-        className={`text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg px-5 py-2.5 text-center mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800 ${className}`}
+        className={`${baseClasses} border-green-500 text-green-500 hover:text-white hover:bg-green-600 focus:ring-green-800 ${className}`}
       >
         {text}
       </a>
@@ -85,7 +91,7 @@ function GreenBtn({ tag = 'button', to = '', text = 'Green', className = '' }) {
     return (
       <button
         type="button"
-        className={`text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg px-5 py-2.5 text-center mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800 ${className}`}
+        className={`${baseClasses} border-green-500 text-green-500 hover:text-white hover:bg-green-600 focus:ring-green-800 ${className}`}
       >
         {text}
       </button>
@@ -94,11 +100,13 @@ function GreenBtn({ tag = 'button', to = '', text = 'Green', className = '' }) {
 }
 
 function RedBtn({ tag = 'button', to = '', text = 'Red', className = '' }) {
+  const baseClasses = `border focus:ring-4 focus:outline-none font-medium rounded-lg px-5 py-2.5 text-center mb-2`;
+
   if (tag === 'Link') {
     return (
       <Link
         to={to}
-        className={`text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg px-5 py-2.5 text-center mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900 ${className}`}
+        className={`${baseClasses} border-red-500 text-red-500 hover:text-white hover:bg-red-600 focus:ring-red-900 ${className}`}
       >
         {text}
       </Link>
@@ -107,7 +115,7 @@ function RedBtn({ tag = 'button', to = '', text = 'Red', className = '' }) {
     return (
       <a
         href={to}
-        className={`text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg px-5 py-2.5 text-center mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900 ${className}`}
+        className={`${baseClasses} border-red-500 text-red-500 hover:text-white hover:bg-red-600 focus:ring-red-900 ${className}`}
       >
         {text}
       </a>
@@ -116,7 +124,7 @@ function RedBtn({ tag = 'button', to = '', text = 'Red', className = '' }) {
     return (
       <button
         type="button"
-        className={`text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg px-5 py-2.5 text-center mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900 ${className}`}
+        className={`${baseClasses} border-red-500 text-red-500 hover:text-white hover:bg-red-600 focus:ring-red-900 ${className}`}
       >
         {text}
       </button>
@@ -125,11 +133,13 @@ function RedBtn({ tag = 'button', to = '', text = 'Red', className = '' }) {
 }
 
 function YellowBtn({ tag = 'button', to = '', text = 'Yellow', className = '' }) {
+  const baseClasses = `border focus:ring-4 focus:outline-none font-medium rounded-lg px-5 py-2.5 text-center mb-2`;
+
   if (tag === 'Link') {
     return (
       <Link
         to={to}
-        className={`text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg px-5 py-2.5 text-center mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900 ${className}`}
+        className={`${baseClasses} border-yellow-300 text-yellow-300 hover:text-white hover:bg-yellow-400 focus:ring-yellow-900 ${className}`}
       >
         {text}
       </Link>
@@ -138,7 +148,7 @@ function YellowBtn({ tag = 'button', to = '', text = 'Yellow', className = '' })
     return (
       <a
         href={to}
-        className={`text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg px-5 py-2.5 text-center mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900 ${className}`}
+        className={`${baseClasses} border-yellow-300 text-yellow-300 hover:text-white hover:bg-yellow-400 focus:ring-yellow-900 ${className}`}
       >
         {text}
       </a>
@@ -147,7 +157,7 @@ function YellowBtn({ tag = 'button', to = '', text = 'Yellow', className = '' })
     return (
       <button
         type="button"
-        className={`text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg px-5 py-2.5 text-center mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900 ${className}`}
+        className={`${baseClasses} border-yellow-300 text-yellow-300 hover:text-white hover:bg-yellow-400 focus:ring-yellow-900 ${className}`}
       >
         {text}
       </button>
@@ -156,11 +166,13 @@ function YellowBtn({ tag = 'button', to = '', text = 'Yellow', className = '' })
 }
 
 function PurpleBtn({ tag = 'button', to = '', text = 'Purple', className = '' }) {
+  const baseClasses = `border focus:ring-4 focus:outline-none font-medium rounded-lg px-5 py-2.5 text-center mb-2`;
+
   if (tag === 'Link') {
     return (
       <Link
         to={to}
-        className={`text-purple-700 hover:text-white border border-purple-700 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg px-5 py-2.5 text-center mb-2 dark:border-purple-400 dark:text-purple-400 dark:hover:text-white dark:hover:bg-purple-500 dark:focus:ring purple-900 ${className}`}
+        className={`${baseClasses} border-purple-400 text-purple-400 hover:text-white hover:bg-purple-500 focus:ring-purple-900 ${className}`}
       >
         {text}
       </Link>
@@ -169,7 +181,7 @@ function PurpleBtn({ tag = 'button', to = '', text = 'Purple', className = '' })
     return (
       <a
         href={to}
-        className={`text-purple-700 hover:text-white border border-purple-700 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg px-5 py-2.5 text-center mb-2 dark:border-purple-400 dark:text-purple-400 dark:hover:text-white dark:hover:bg-purple-500 dark:focus:ring-purple-900 ${className}`}
+        className={`${baseClasses} border-purple-400 text-purple-400 hover:text-white hover:bg-purple-500 focus:ring-purple-900 ${className}`}
       >
         {text}
       </a>
@@ -178,7 +190,7 @@ function PurpleBtn({ tag = 'button', to = '', text = 'Purple', className = '' })
     return (
       <button
         type="button"
-        className={`text-purple-700 hover:text-white border border-purple-700 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg px-5 py-2.5 text-center mb-2 dark:border-purple-400 dark:text-purple-400 dark:hover:text-white dark:hover:bg-purple-500 dark:focus:ring-purple-900 ${className}`}
+        className={`${baseClasses} border-purple-400 text-purple-400 hover:text-white hover:bg-purple-500 focus:ring-purple-900 ${className}`}
       >
         {text}
       </button>
