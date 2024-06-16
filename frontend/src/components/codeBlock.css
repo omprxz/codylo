@@ -1,7 +1,22 @@
+.CodeBlockDiv > span{
+  border-radius: 0 0 0.5rem 0.5rem !important;
+}
 .CodeBlockDiv > span > code {
   white-space: pre-wrap !important;
   overflow-wrap: break-word !important;
 }
 .CodeBlockDiv.error > span > code {
   color: red !important;
+}
+.fileName p::-webkit-scrollbar{
+  display: none;
+}
+.fileName::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 20%;
+  background: linear-gradient(to left, hsl(215, 27.9%, 16.9%), transparent);
 }

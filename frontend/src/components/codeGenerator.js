@@ -55,11 +55,7 @@ function GenerateCode() {
     "Lua": ".lua",
     "Solidity": ".sol"
   };
-  const gemini_api = process.env.REACT_APP_GEMINI_API
   let geminiErr = 0
-
-  const genAI = new GoogleGenerativeAI(gemini_api);
-
   const [code,
     setCode] = useState('');
   const [filename,
@@ -98,12 +94,6 @@ function GenerateCode() {
   const handleChunk = (chunk) => {
   setCode((prevCode) => prevCode + chunk);
   }
-  const scrollDown = (px) => {
-    window.scrollBy({
-      top: px,
-      behavior: 'smooth'
-    });
-  };
   const getPart = (prompt) => {
     let parts = [
       {
@@ -195,7 +185,7 @@ function GenerateCode() {
       setGenerating(true)
       setResultsVisib(false)
       setCode('');
-      let response = await Gemini(parts, geminiErr, setErrorCode, setResultsVisib, handleChunk, model);
+      let response = await Gemini(parts, geminiErr, setErrorCode, setResultsVisib, handleChunk, true, model);
       let result = response
 
       let matchCode = codeRegEx.exec(result)
@@ -205,7 +195,7 @@ function GenerateCode() {
         setSyntaxLanguage(matchCode[1])
       } else {
         if (response.includes('Internal') && response.includes('500')) {
-          let response = await Gemini(parts, geminiErr, setErrorCode, setResultsVisib, handleChunk, model);
+          let response = await Gemini(parts, geminiErr, setErrorCode, setResultsVisib, handleChunk, true, model);
           let result = response
 
           let matchCode = codeRegEx.exec(result)
@@ -215,13 +205,13 @@ function GenerateCode() {
             setSyntaxLanguage(matchCode[1])
           } else {
             rawCode = response
-            setSyntaxLanguage('qwerty')
+            setSyntaxLanguage('plaintext')
           }
 
         } else {
           rawCode = response
+          setSyntaxLanguage('plaintext')
         }
-        setSyntaxLanguage('qwerty')
       }
       setCode(rawCode.replace(/^\s*\n/gm, ''))
 
@@ -270,13 +260,12 @@ function GenerateCode() {
         setCode(e)
       }
     }
-    scrollDown(350)
 
   }
 
   return(
-    <>9
-    <div className='flex flex-col align-middle p-2 gap-4'>
+    <>
+    <div className='flex flex-col align-middle p-2 gap-4 pb-20'>
     <h1 className="font-bold my-3 text-2xl text-green-300 text-center">AI Code Generator</h1>
     <select id="language" className="form-select block w-full px-4 py-2 mt-1 rounded-md bg-gray-800 text-white border-none focus:outline-none focus:bg-gray-800" value={language} onChange={handleLanguage}>
       <option value="" disabled>Select languages</option>
@@ -341,7 +330,8 @@ function GenerateCode() {
       </div>
     )
       }
-    </div> < />
+    </div>
+    </>
   );
 }
 
