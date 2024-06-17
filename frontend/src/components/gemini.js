@@ -13,10 +13,10 @@ const Gemini = async (parts, geminiErr=0, setErrorCode, setResultsVisib, handleC
   const gemini_api = process.env.REACT_APP_GEMINI_API
   const genAI = new GoogleGenerativeAI(gemini_api);
   const generationConfig = {
-      temperature: 1,
-      topP: 0.95,
-      topK: 64,
-      maxOutputTokens: 8000,
+      temperature: 0.5,
+      topP: 0.6,
+      topK: 50,
+      maxOutputTokens: 10000,
       responseMimeType: "text/plain",
     };
   const scrollDown = (px) => {
@@ -28,13 +28,7 @@ const Gemini = async (parts, geminiErr=0, setErrorCode, setResultsVisib, handleC
     try {
       const result = await genAI.getGenerativeModel({
     model: model,
-    generationConfig: {
-        temperature: 1,
-        topP: 0.95,
-        topK: 64,
-        maxOutputTokens: 10000,
-        responseMimeType: "text/plain"
-    },
+    generationConfig,
     safetySettings: [
         {
             category: 'HARM_CATEGORY_DANGEROUS_CONTENT',
@@ -59,14 +53,15 @@ const Gemini = async (parts, geminiErr=0, setErrorCode, setResultsVisib, handleC
         }]
       });
       setResultsVisib(true)
+      let scrollStop = 0;
       for await (const chunk of result.stream){
       const chunkText = chunk.text()
       handleChunk(chunkText)
-      let scrollStop = 0;
-      if(scroll && scrollStop <= 20){
-        scrollDown(50)
-        scrollStop++
+      
+      if(scroll && (scrollStop % 5 == 0) && scrollStop <= 20){
+        scrollDown(100)
       }
+      scrollStop++
     }
 
       let generatedCode = await result.response;
@@ -104,11 +99,11 @@ const Gemini = async (parts, geminiErr=0, setErrorCode, setResultsVisib, handleC
           });
           
       setResultsVisib(true)
+      let scrollStop = 0;
       for await (const chunk of result.stream){
       const chunkText = chunk.text()
       handleChunk(chunkText)
-      let scrollStop = 0;
-      if(scroll && scrollStop <= 20){
+      if(scroll && scrollStop <= 10){
         scrollDown(50)
         scrollStop++
       }

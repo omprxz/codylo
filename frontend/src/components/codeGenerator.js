@@ -3,7 +3,7 @@ import React, {
   useEffect,
   useRef
 } from 'react'
-import Code_Block from './codeBlock.js';
+import Code_Block from './codeBlock';
 import axios from 'axios';
 import {
   GoogleGenerativeAI,
@@ -11,8 +11,9 @@ import {
   HarmBlockThreshold
 } from "@google/generative-ai";
 import 'animate.css';
-import { generateCodePrompt } from './prompts.js';
-import Gemini from './gemini.js';
+import { generateCodePrompt } from './prompts';
+import Gemini from './gemini';
+import Mic from './mic';
 import { MdMicNone } from "react-icons/md";
 import './codeGenerator.css';
 
@@ -76,9 +77,6 @@ function GenerateCode() {
     setGenerating] = useState(false)
   const [alertMsg,
     setAlertMsg] = useState('')
-  const [micActive, setMicActive] = useState(false);
-  const recognitionRef = useRef(null);
-
   const handleLanguage = (event) => {
     setLanguage(event.target.value)
   }
@@ -97,19 +95,19 @@ function GenerateCode() {
   const getPart = (prompt) => {
     let parts = [
       {
-      text: "You are a helpful code assistant that can teach a junior developer how to code. Your language of choice is ${language}. Don't explain the code, just generate the code block itself.\n    Write flawless code with the following instructions and requirements:\n    - What I want: ${user_prompt}\n    - Write the code in ${language}\n    - Comments preference: Give the code ${comments_preference}\n    - Do not give further explanation of the code you generated because it will cost me more tokens.\n    - Keep the code flawless and in one go so that I don't have to make the request again to save my tokens.\n    - Provide the code in the respective language code block.\n    - After the main code block, suggest a filename in a JSON code block inside the 'filename' key.\n    - Do proper error handling if required.\n    - Adhere to all instructions and rules given to you strictly.\n    - example of output format\n    >>\n    ```{language}\n    code goes here....\n    ```\n\n    Suggested filename is:\n    ```json\n    {\n    filename: \"suggested file name with extension\"\n    }\n    ```\n    <<\n    - keep the main code and suggest file in two completely different code blocks \n - if the asked question is irrelevant give the response as short as possible in just single paragraph withing 50 words"
+      text: "You are a helpful code assistant that can teach a junior developer how to code. Your language of choice is ${language}. Don't explain the code, just generate the code block itself.\n    Write flawless code with the following instructions and requirements:\n    - What I want: ${user_prompt}\n    - Write the code in ${language}\n    - Comments preference: Give the code ${comments_preference}\n    - Do not give further explanation of the code you generated because it will cost me more tokens.\n    - Keep the code flawless and in one go so that I don't have to make the request again to save my tokens.\n    - Provide the code in the respective language code block.\n    - After the main code block, suggest a filename in a JSON code block inside the 'filename' key.\n    - Do proper error handling if required.\n    - Adhere to all instructions and rules given to you strictly.\n    - example of output format\n    >>\n    \`\`\`{language}\n    code goes here....\n    \`\`\`\n\n    Suggested filename is:\n    \`\`\`json\n    {\n    filename: \"suggested file name with extension\"\n    }\n    \`\`\`\n    <<\n    - keep the main code and suggest file in two completely different code blocks \n - if the asked question is irrelevant give the response as short as possible in just single paragraph withing 50 words"
     },
       {
-        text: "input: You are a helpful code assistant that can teach a junior developer how to code. Your language of choice is php. Don't explain the code, just generate the code block itself.\nWrite flawless code with the following instructions and requirements:\n- What I want: Write a code for showing current date and time\n- Write the code in php\n- Comments preference: Give the code with comments\n- Do not give further explanation of the code you generated because it will cost me more tokens.\n- Keep the code flawless and in one go so that I don't have to make the request again to save my tokens.\n- Provide the code in the respective language code block.\n- After the main code block, suggest a filename in a JSON code block inside the 'filename' key.\n- Do proper error handling if required.\n- Adhere to all instructions and rules given to you strictly.\n- example of output format\n>>\n```{language}\ncode goes here....\n```\n\nSuggested filename is:\n```json\n{\nfilename: \"suggested file name with extension\"\n}\n```\n<<\n- keep the main code and suggest file in two completely different code blocks\n- if the asked question is irrelevant give the response as short as possible in just single paragraph withing 50 words"
+        text: "input: You are a helpful code assistant that can teach a junior developer how to code. Your language of choice is php. Don't explain the code, just generate the code block itself.\nWrite flawless code with the following instructions and requirements:\n- What I want: Write a code for showing current date and time\n- Write the code in php\n- Comments preference: Give the code with comments\n- Do not give further explanation of the code you generated because it will cost me more tokens.\n- Keep the code flawless and in one go so that I don't have to make the request again to save my tokens.\n- Provide the code in the respective language code block.\n- After the main code block, suggest a filename in a JSON code block inside the 'filename' key.\n- Do proper error handling if required.\n- Adhere to all instructions and rules given to you strictly.\n- example of output format\n>>\n\`\`\`{language}\ncode goes here....\n\`\`\`\n\nSuggested filename is:\n\`\`\`json\n{\nfilename: \"suggested file name with extension\"\n}\n\`\`\`\n<<\n- keep the main code and suggest file in two completely different code blocks\n- if the asked question is irrelevant give the response as short as possible in just single paragraph withing 50 words"
       },
       {
-        text: "output: ```php\n<?php\n// Get the current date and time\n$currentTime = date('Y-m-d H:i:s'); // Display the current date and time\necho \"The current date and time is: $currentTime\"; ?>\n ```\n```json\n{\"filename\": \"current_datetime.php\"}\n```"
+        text: "output: \`\`\`php\n<?php\n// Get the current date and time\n$currentTime = date('Y-m-d H:i:s'); // Display the current date and time\necho \"The current date and time is: $currentTime\"; ?>\n \`\`\`\n\`\`\`json\n{\"filename\": \"current_datetime.php\"}\n\`\`\`"
       },
       {
-        text: "input: You are a helpful code assistant that can teach a junior developer how to code. Your language of choice is python. Don't explain the code, just generate the code block itself.\nWrite flawless code with the following instructions and requirements:\n- What I want: get input search query from user and give google results page link\n- Write the code in python\n- Comments preference: Give the code without comments\n- Do not give further explanation of the code you generated because it will cost me more tokens.\n- Keep the code flawless and in one go so that I don't have to make the request again to save my tokens.\n- Provide the code in the respective language code block.\n- After the main code block, suggest a filename in a JSON code block inside the 'filename' key.\n- Do proper error handling if required.\n- Adhere to all instructions and rules given to you strictly.\n- example of output format\n>>\n```{language}\ncode goes here....\n```\n\nSuggested filename is:\n```json\n{\nfilename: \"suggested file name with extension\"\n}\n```\n<<\n- keep the main code and suggest file in two completely different code blocks\n- if the asked question is irrelevant give the response as short as possible in just single paragraph withing 50 words"
+        text: "input: You are a helpful code assistant that can teach a junior developer how to code. Your language of choice is python. Don't explain the code, just generate the code block itself.\nWrite flawless code with the following instructions and requirements:\n- What I want: get input search query from user and give google results page link\n- Write the code in python\n- Comments preference: Give the code without comments\n- Do not give further explanation of the code you generated because it will cost me more tokens.\n- Keep the code flawless and in one go so that I don't have to make the request again to save my tokens.\n- Provide the code in the respective language code block.\n- After the main code block, suggest a filename in a JSON code block inside the 'filename' key.\n- Do proper error handling if required.\n- Adhere to all instructions and rules given to you strictly.\n- example of output format\n>>\n\`\`\`{language}\ncode goes here....\n\`\`\`\n\nSuggested filename is:\n\`\`\`json\n{\nfilename: \"suggested file name with extension\"\n}\n\`\`\`\n<<\n- keep the main code and suggest file in two completely different code blocks\n- if the asked question is irrelevant give the response as short as possible in just single paragraph withing 50 words"
       },
       {
-        text: "output: ```python\nimport webbrowser\n\nquery = input(\"Enter your search query: \")\nurl = f\"https://www.google.com/search?q={query}\"\n\nwebbrowser.open(url)\n```\n\n```json\n{\n\"filename\": \"google_search.py\"\n}\n```"
+        text: "output: \`\`\`python\nimport webbrowser\n\nquery = input(\"Enter your search query: \")\nurl = f\"https://www.google.com/search?q={query}\"\n\nwebbrowser.open(url)\n\`\`\`\n\n\`\`\`json\n{\n\"filename\": \"google_search.py\"\n}\n\`\`\`"
       },
       {
         text: "input: " + prompt
@@ -120,48 +118,6 @@ function GenerateCode() {
     ];
     return parts;
   }
-  
-  const handleMic = () => {
-  if (!('webkitSpeechRecognition' in window)) {
-    setAlertMsg('Web Speech API is not supported in this browser.');
-    return;
-  }
-
-  if (micActive) {
-    recognitionRef.current.stop();
-    setMicActive(false);
-  } else {
-    const recognition = new window.webkitSpeechRecognition();
-    recognition.continuous = false;
-    recognition.interimResults = false;
-    recognition.lang = 'en-US';
-
-    recognition.onstart = () => {
-      setMicActive(true)
-    };
-
-    recognition.onresult = (event) => {
-      const transcript = event.results[0][0].transcript;
-      setUser_prompt(prev => prev +' '+ transcript);
-      setMicActive(false)
-      setAlertMsg('');
-    };
-
-    recognition.onerror = (event) => {
-      console.error(event.error);
-      setMicActive(false)
-      setAlertMsg('Error occurred in recognition: ' + event.error);
-    };
-
-    recognition.onend = () => {
-      setMicActive(false);
-      setAlertMsg('');
-    };
-
-    recognition.start();
-    recognitionRef.current = recognition;
-  }
-};
 
   const generateCode = async () => {
     if (user_prompt == '') {
@@ -179,8 +135,8 @@ function GenerateCode() {
     let extension = lowercaseExtensions[lowercaseLanguage];
     setFileName(`main${extension}`);
 
-    const codeRegEx = /```(\w+)\s([\s\S]*?)```/g;
-    const fileNameRegEx = /```json([\s\S]*?)```/g;
+    const codeRegEx = /\`\`\`(\w+)\s([\s\S]*?)\`\`\`/g;
+    const fileNameRegEx = /\`\`\`json([\s\S]*?)\`\`\`/g;
     try {
       setGenerating(true)
       setResultsVisib(false)
@@ -308,13 +264,9 @@ function GenerateCode() {
       <option value="with comments">With Comments</option>
     </select>
     <div>
-      <div className='relative'>
-        <div class={`absolute bottom-1.5 right-1.5 z-10 mic-container text-center ${micActive && 'mic-containerAnimate'}`}>
-          <div class="circle"></div>
-          <div class="circle"></div>
-          <div class="circle"></div>
-          <MdMicNone className='text-white text-2xl mic' onClick={handleMic} />
-        </div>
+    <div className='relative'>
+
+        <Mic className={`absolute bottom-1.5 right-1.5 z-10 mic-container text-center`} iconClassName={`text-white text-[1.35rem]`} setAlertMsg={setAlertMsg} setText={setUser_prompt} />
 
         <textarea id="user_prompt" rows="5" placeholder="Describe what you want" className={`form-textarea block w-full px-4 pe-10 py-2 mt-1 rounded-md bg-gray-800 text-white focus:outline-none focus:bg-gray-800 min-h-[120px] ${alertMsg == 'Prompt is empty.' ? 'border-red-600 bg-red-200 ring-2 ring-red-300 placeholder:text-gray-700 focus:placeholder:text-gray-500 animate__animated animate__headShake': 'border-none'}`} value={user_prompt} onChange={handleUserPrompt}></textarea>
       </div>
@@ -322,7 +274,7 @@ function GenerateCode() {
         {alertMsg}
       </p>
     </div>
-    <div className="text-center">
+    <div className="flex justify-center mx-5 gap-5 text-center">
       <button className="border w-1/2 focus:ring-4 hover:ring-4 focus:outline-none font-medium rounded-sm px-5 py-2.5 text-center mb-2 border-green-400 text-green-400 hover:ring-green-900 focus:ring-green-900" disabled={generating} onClick={generateCode}> { generating ? 'Generating...': 'Generate Code' }</button>
     </div>
     { resultsVisib && (<div className="results">

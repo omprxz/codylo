@@ -1,6 +1,7 @@
 import { FaCommentAlt, FaTimes } from 'react-icons/fa'
 import {useState} from 'react';
 import axios from 'axios';
+import './feedback.css';
 
 export default function FeedBack(){
   const api_baseurl = window.location.hostname === "localhost" ? process.env.REACT_APP_API_BASEURL_LOCAL : process.env.REACT_APP_API_BASEURL_PRODUCTION;
@@ -72,7 +73,7 @@ export default function FeedBack(){
         <span className={`text-white bg-gray-600 px-3 py-1 rounded z-30 fixed right-6 bottom-6 inline-block transition ease-in-out duration-300 ${ isFormOpen ? 'opacity-0 pointer-events-none' : '' }`} onClick={handleFeedbackToggle}><FaCommentAlt className='inline-block' /> Give Feedback</span>
       </div>
       <div className={`fixed mt-[-5rem] z-20 flex justify-center items-center min-h-screen min-w-full transition ease-in-out duration-300 ${ isFormOpen ? '' : 'opacity-0 pointer-events-none' }`}> 
-        <div className='w-80 bg-gray-900 shadow-md shadow-slate-700 rounded-lg flex flex-col items-center px-7 pt-5 pb-7 gap-3'>
+        <div className='feedbackForm w-80 shadow-md shadow-slate-800 rounded-lg flex flex-col items-center px-7 pt-5 pb-7 gap-3'>
           <h1 className='text-center font-bold text-white text-2xl'>Give Feedback</h1>
             <input type="text" id="name" class="border text-sm rounded block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" placeholder="Name" value={fbName} onChange={handleFbValueChange} required />
             <input type="email" id="email" class="border text-sm rounded block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" placeholder="Email" value={fbEmail} onChange={handleFbValueChange} required />

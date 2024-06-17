@@ -4,6 +4,7 @@
 .CodeBlockDiv > span > code {
   white-space: pre-wrap !important;
   overflow-wrap: break-word !important;
+  
 }
 .CodeBlockDiv.error > span > code {
   color: red !important;
