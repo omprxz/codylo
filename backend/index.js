@@ -51,7 +51,7 @@ async function connectToDatabase() {
     }
 }
 
-await connectToDatabase();
+connectToDatabase();
 
 const geminiApiKeys = process.env.GEMINI_API_KEYS.split(',');
 const geminiApiKey = geminiApiKeys[2].trim()
