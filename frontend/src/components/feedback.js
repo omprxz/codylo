@@ -55,7 +55,7 @@ export default function FeedBack(){
     
     setFbSending(true)
   try {
-    const response = await axios.post(`${api_baseurl}'/api/sendFeedbackMail`, {
+    const response = await axios.post(`${api_baseurl}/api/sendFeedbackMail`, {
       name: fbName,
       email: fbEmail,
       text: fbText
