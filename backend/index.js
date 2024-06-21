@@ -88,6 +88,7 @@ const saveFeedback = async (name, email, feedback) => {
         .save()
         .then((fb) => {
             console.log(fb);
+            return fb;
         })
         .catch((err) => console.log(err));
 };
