@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { MdMicNone } from 'react-icons/md';
 import './Mic.css';
 

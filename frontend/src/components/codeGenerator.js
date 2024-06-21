@@ -1,4 +1,4 @@
-import React, {
+import {
   useState,
   useEffect,
   useRef
@@ -141,7 +141,7 @@ function GenerateCode() {
       setGenerating(true)
       setResultsVisib(false)
       setCode('');
-      let response = await Gemini(parts, geminiErr, setErrorCode, setResultsVisib, handleChunk, true, model);
+      let response = await Gemini(parts, geminiErr, setErrorCode, setResultsVisib, true, handleChunk, true, model, 0);
       let result = response
 
       let matchCode = codeRegEx.exec(result)
@@ -151,7 +151,7 @@ function GenerateCode() {
         setSyntaxLanguage(matchCode[1])
       } else {
         if (response.includes('Internal') && response.includes('500')) {
-          let response = await Gemini(parts, geminiErr, setErrorCode, setResultsVisib, handleChunk, true, model);
+          let response = await Gemini(parts, geminiErr, setErrorCode, setResultsVisib, true, handleChunk, true, model, 0);
           let result = response
 
           let matchCode = codeRegEx.exec(result)
@@ -274,7 +274,7 @@ function GenerateCode() {
         {alertMsg}
       </p>
     </div>
-    <div className="flex justify-center mx-5 gap-5 text-center">
+    <div className="text-center">
       <button className="border w-1/2 focus:ring-4 hover:ring-4 focus:outline-none font-medium rounded-sm px-5 py-2.5 text-center mb-2 border-green-400 text-green-400 hover:ring-green-900 focus:ring-green-900" disabled={generating} onClick={generateCode}> { generating ? 'Generating...': 'Generate Code' }</button>
     </div>
     { resultsVisib && (<div className="results">

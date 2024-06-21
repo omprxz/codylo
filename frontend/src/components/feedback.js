@@ -55,14 +55,30 @@ export default function FeedBack(){
     
     setFbSending(true)
   try {
-    const response = await axios.post(`${api_baseurl}'/api/sendFeedbackMail`, {
+    const response = await axios.post(`${api_baseurl}/api/sendFeedbackMail`, {
       name: fbName,
       email: fbEmail,
       text: fbText
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json'
+      }
     });
-    setSucMsg("Feedback sent to om. Thanks")
+    if(response.data.status == 'success'){
+      setFbName('')
+      setFbEmail('')
+      setFbText('')
+      setFbSending(false)
+      setSucMsg("Feedback sent to om. Thanks")
+      setTimeout(function() {
+        setIsFormOpen(false)
+      }, 2000);
+    }else{
+      throw "Error in sending email to om."
+    }
   } catch (error) {
-    setErrMsg('Failed to send email:', error.response ? error.response.data : error.message);
+    setErrMsg('Failed to send email:', error.response ? error.response.data : error);
     setFbSending(false)
   }
     setFbSending(false)
@@ -70,7 +86,7 @@ export default function FeedBack(){
   return(
     <>
       <div>
-        <span className={`text-white bg-gray-600 px-3 py-1 rounded z-30 fixed right-6 bottom-6 inline-block transition ease-in-out duration-300 ${ isFormOpen ? 'opacity-0 pointer-events-none' : '' }`} onClick={handleFeedbackToggle}><FaCommentAlt className='inline-block' /> Give Feedback</span>
+        <span className={`text-white bg-gray-600 px-3 py-1 rounded z-30 fixed right-6 bottom-6 inline-block transition ease-in-out duration-300 ${ isFormOpen ? 'opacity-0 pointer-events-none' : '' }`} onClick={handleFeedbackToggle}><FaCommentAlt className='inline-block' /> Feedback</span>
       </div>
       <div className={`fixed mt-[-5rem] z-20 flex justify-center items-center min-h-screen min-w-full transition ease-in-out duration-300 ${ isFormOpen ? '' : 'opacity-0 pointer-events-none' }`}> 
         <div className='feedbackForm w-80 shadow-md shadow-slate-800 rounded-lg flex flex-col items-center px-7 pt-5 pb-7 gap-3'>

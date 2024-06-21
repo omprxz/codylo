@@ -1,4 +1,4 @@
-import React, {
+import {
   useState,
   useEffect
 } from 'react'
@@ -139,7 +139,7 @@ function FixBug() {
       setResultsVisib(false)
       setFixedCode('')
 
-      let response = await Gemini(parts, geminiErr, setErrorCode, setResultsVisib, handleChunk, true, model);
+      let response = await Gemini(parts, geminiErr, setErrorCode, setResultsVisib, true, handleChunk, true, model, 1);
       let result = response
 
       let matchCode = codeRegEx.exec(result)
@@ -150,7 +150,7 @@ function FixBug() {
       } else {
         if (response.includes('Internal') && response.includes('500')) {
 
-          let response = await Gemini(parts, geminiErr, setErrorCode, setResultsVisib, handleChunk, true, model);
+          let response = await Gemini(parts, geminiErr, setErrorCode, setResultsVisib, true, handleChunk, true, model, 1);
 
           let result = response
 
