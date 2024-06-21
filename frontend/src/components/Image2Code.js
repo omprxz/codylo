@@ -281,11 +281,11 @@ const Image2Code = () => {
                 try {
                     let interval;
                     setprocessText("Analyzing image");
+                    setprocessStatus(55);
                     interval = setTimeout(function () {
                         setprocessText("Image analyzing almost done");
-                        setprocessStatus(55);
+                        setprocessStatus(70);
                     }, 10000);
-                    setprocessStatus(70);
 
                     let geminiImage2JsonData = await getJsonFromGemini(
                         file,
@@ -387,8 +387,10 @@ const Image2Code = () => {
                     }
 
                     let finalHtmlData;
-                    try {
+                    console.log(cssFw, promptFunc)
                         if (cssFw != "" || promptFunc != "") {
+                          console.log('entered adding libraries')
+                    try {
             let customInst = "";
               customInst += "\nImagine you're a seasoned pro in HTML, CSS, and JavaScript, including various CSS frameworks.\nPlease must follow these extra custom instructions while generating the final HTML output code:\n-Final output html code must have to in html code block like in this structure:\n\`\`\`html\nHtml output code goes here...\n\`\`\`\nMust follow this output structure (don't give output html code without code block.\n-What is the fullform of HTML";
 
@@ -408,12 +410,15 @@ const Image2Code = () => {
                             } else {
                   finalHtmlData = rawHtmlData;
                             }
-                        } else {
-                            finalHtmlData = rawHtmlData;
-                        }
-                    } catch (e) {
+                        } catch (e) {
+                        console.log('cannot add libs.')
                         finalHtmlData = rawHtmlData;
                     }
+                        } else {
+                          console.log('cssFw & promptFunc is empty', cssFw, promptFunc)
+                            finalHtmlData = rawHtmlData;
+                        }
+                  
                     setCode(finalHtmlData);
                     //Reset form
                     setFile("");
@@ -665,7 +670,7 @@ const Image2Code = () => {
                             <div className="flex flex-col justify-center items-center gap-1.5 text-center min-w-full">
                                 <div className="mb-5 h-4 overflow-hidden rounded-full min-w-full bg-gray-200">
                                     <div
-                                        className="h-4 animate-pulse rounded-full bg-gradient-to-r from-green-500 to-blue-500 text-sm flex justify-center items-center transition transition-all duration-500"
+                                        className="h-4 animate-pulse rounded-full bg-gradient-to-r from-green-500 to-blue-500 text-sm flex justify-center items-center transition transition-all duration-1000"
                                         style={{ width: processStatus + "%" }}
                                     >
                                         {" "}
