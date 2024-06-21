@@ -103,6 +103,12 @@ const Image2Code = () => {
     const handleUsingJquery = () => {
         setusingJquery(!usingJquery);
     };
+    
+    function prettifyHTML(htmlString) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlString, 'text/html');
+    return new XMLSerializer().serializeToString(doc.documentElement);
+}
 
     const uploadToCloud = async (file) => {
         try {
@@ -387,9 +393,7 @@ const Image2Code = () => {
                     }
 
                     let finalHtmlData;
-                    console.log(cssFw, promptFunc)
                         if (cssFw != "" || promptFunc != "") {
-                          console.log('entered adding libraries')
                     try {
             let customInst = "";
               customInst += "\nImagine you're a seasoned pro in HTML, CSS, and JavaScript, including various CSS frameworks.\nPlease must follow these extra custom instructions while generating the final HTML output code:\n-Final output html code must have to in html code block like in this structure:\n\`\`\`html\nHtml output code goes here...\n\`\`\`\nMust follow this output structure (don't give output html code without code block.\n-What is the fullform of HTML";
@@ -411,14 +415,12 @@ const Image2Code = () => {
                   finalHtmlData = rawHtmlData;
                             }
                         } catch (e) {
-                        console.log('cannot add libs.')
                         finalHtmlData = rawHtmlData;
                     }
                         } else {
-                          console.log('cssFw & promptFunc is empty', cssFw, promptFunc)
                             finalHtmlData = rawHtmlData;
                         }
-                  
+                  finalHtmlData = prettifyHTML(finalHtmlData)
                     setCode(finalHtmlData);
                     //Reset form
                     setFile("");
