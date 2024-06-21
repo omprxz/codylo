@@ -31,7 +31,7 @@ const corsOptions = {
     optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
-//app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
+app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 
 let MONGO_URI;
 if (process.env.NODE_ENV === 'production') {
@@ -51,14 +51,14 @@ const replicateApiKeys = process.env.REPLICATE_API_TOKENS.split(',')
 const replicateApiKey = replicateApiKeys[0].trim()
 
 const uploadDirOriginalImages = "uploads/image2code/original_images/";
-const absoluteUploadDir = path.join("/tmp", uploadDirOriginalImages);
+const absoluteUploadDir = path.join(__dirname, uploadDirOriginalImages);
 if (!fs.existsSync(absoluteUploadDir)) {
     fs.mkdirSync(absoluteUploadDir, { recursive: true });
 }
 const uploadGemini = multer({
     storage: multer.diskStorage({
         destination: function (req, file, cb) {
-            cb(null, "/tmp/uploads/image2code/original_images/");
+            cb(null, "uploads/image2code/original_images/");
         },
         filename: function (req, file, cb) {
             const projectId = req.body.projectId;
@@ -184,7 +184,6 @@ app.post(
     uploadGemini.single("file"),
     async (req, res) => {
         const { file } = req;
-        let promptImgs = ["https://i.ibb.co/NNtCLpR/1.png", "https://i.ibb.co/3ShnnNB/2.png"]
         //console.log(req.body)
         const uploadedFileName = file.filename;
         if (!file) {
@@ -208,34 +207,9 @@ app.post(
                 );
                 return file;
             }
-            async function getFileFromUrl(img, filename) {
-    const dirPath = '/tmp/uploads/img2code/prompt_images';
-    const filePath = path.join(dirPath, filename);
 
-    if (!fs.existsSync(dirPath)) {
-        fs.mkdirSync(dirPath, { recursive: true });
-    }
-
-    const writer = fs.createWriteStream(filePath);
-
-    const response = await axios({
-        url: img,
-        method: 'GET',
-        responseType: 'stream'
-    });
-
-    response.data.pipe(writer);
-
-    return new Promise((resolve, reject) => {
-        writer.on('finish', resolve);
-        writer.on('error', reject);
-    });
-}
-            
-            await getFileFromUrl(promptImgs[0], "1.png")
-            await getFileFromUrl(promptImgs[1], "2.png")
-
-            const uploadedFilePath = path.join("/tmp/uploads/image2code/original_images/",
+            const uploadedFilePath = path.join(
+                "uploads/image2code/original_images/",
                 uploadedFileName
             );
 
@@ -246,11 +220,11 @@ app.post(
 
             const files = [
                 await uploadToGemini(
-                    "/tmp/uploads/image2code/prompt_images/1.png",
+                    "uploads/image2code/prompt_images/1.png",
                     "image/png"
                 ),
                 await uploadToGemini(
-                    "/tmp/uploads/image2code/prompt_images/2.png",
+                    "uploads/image2code/prompt_images/2.png",
                     "image/png"
                 ),
                 contentGeminiImage
@@ -394,7 +368,7 @@ app.post("/api/image2code/json", (req, res) => {
     }
 
     const dirPath = path.join(
-        "/tmp",
+        __dirname,
         "uploads/image2code/" + jsonType + "_json"
     );
     const filePath = path.join(dirPath, `${projectId}.json`);
@@ -453,7 +427,7 @@ app.post("/api/image2code/html", (req, res) => {
     }
 
     const dirPath = path.join(
-        "/tmp",
+        __dirname,
         "uploads/image2code/" + htmlType + "_html"
     );
     const filePath = path.join(dirPath, `${projectId}.html`);
