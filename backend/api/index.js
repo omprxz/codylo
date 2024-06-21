@@ -52,8 +52,6 @@ async function connectToDatabase() {
 }
 
 connectToDatabase();
-//app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
-
 
 const geminiApiKeys = process.env.GEMINI_API_KEYS.split(',');
 const geminiApiKey = geminiApiKeys[2].trim()
@@ -91,7 +89,7 @@ const saveFeedback = async (name, email, feedback) => {
         return newFeedback;
     } catch (err) {
         console.error("Error saving feedback:", err);
-        throw err; // Re-throw the error to be caught by the caller
+        throw err;
     }
 };
 
@@ -124,7 +122,7 @@ async function sendEmail(name, email, text, recipientEmail, from, passPath) {
         return { message: "Email sent!", status: "success", data: newFb };
     } catch (err) {
         console.error("Error sending email or saving feedback:", err);
-        throw err; // Re-throw the error to be caught by the caller
+        throw err;
     }
 }
 
@@ -164,7 +162,7 @@ app.get("/api/proxy-image", async (req, res) => {
         res.status(500).send("Error fetching image: " + error.message);
     }
 });
-/*
+
 app.post("/api/image2code", async (req, res) => {
     const { imageurl, functionality, cssframework, bgcolor, usejquery, ip } =
         req.body;
@@ -190,14 +188,13 @@ app.post("/api/image2code", async (req, res) => {
         data: saveToDb
     });
 });
-*/
+
 app.post(
     "/api/gemini/image2json",
     uploadGemini.single("file"),
     async (req, res) => {
         const { file } = req;
         let promptImgs = ["https://i.ibb.co/NNtCLpR/1.png", "https://i.ibb.co/3ShnnNB/2.png"]
-        //console.log(req.body)
         const uploadedFileName = file.filename;
         if (!file) {
             return res.status(400).json({ message: "No file uploaded" });
@@ -449,33 +446,7 @@ app.post(
         }
     }
 );
-/*
-app.post("/api/image2code/json", (req, res) => {
-    const { projectId, jsonData, jsonType } = req.body;
 
-    if (!projectId || !jsonData) {
-        return res.status(400).send("projectId and jsonData are required");
-    }
-
-    const dirPath = path.join(
-        "/tmp",
-        "uploads/image2code/" + jsonType + "_json"
-    );
-    const filePath = path.join(dirPath, `${projectId}.json`);
-
-    if (!fs.existsSync(dirPath)) {
-        fs.mkdirSync(dirPath, { recursive: true });
-    }
-
-    fs.writeFile(filePath, JSON.stringify(jsonData), "utf8", (err) => {
-        if (err) {
-            return res.status(500).send("Error saving JSON data");
-        }
-
-        res.status(200).send("JSON data saved successfully");
-    });
-});
-*/
 app.post("/api/text2image/replicate", async (req, res) => {
     try {
       
@@ -492,11 +463,9 @@ const replicate = new Replicate({
             output_quality: 80,
             negative_prompt: "ugly, distorted"
         };
-        //console.log(input);
         const output = await replicate.run("stability-ai/stable-diffusion-3", {
             input
         });
-        //console.log(output);
         res.json({
             status: "success",
             imageUrl: output[0]
@@ -508,34 +477,7 @@ const replicate = new Replicate({
         });
     }
 });
-/*
-app.post("/api/image2code/html", (req, res) => {
-    const { projectId, htmlData, htmlType } = req.body;
-
-    if (!projectId || !htmlData) {
-        return res.status(400).send("projectId and htmlData are required");
-    }
-
-    const dirPath = path.join(
-        "/tmp",
-        "uploads/image2code/" + htmlType + "_html"
-    );
-    const filePath = path.join(dirPath, `${projectId}.html`);
-
-    if (!fs.existsSync(dirPath)) {
-        fs.mkdirSync(dirPath, { recursive: true });
-    }
-
-    fs.writeFile(filePath, htmlData, "utf8", (err) => {
-        if (err) {
-            return res.status(500).send("Error saving HTML data");
-        }
-
-        res.status(200).send("HTML data saved successfully");
-    });
-});
-*/
 // << APIS
 app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+    console.log(`Server is running on port: ${port}`);
 });

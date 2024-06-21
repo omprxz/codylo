@@ -46,8 +46,6 @@ const Image2Code = () => {
     const [processText, setprocessText] = useState("");
     const [processStatus, setprocessStatus] = useState(0);
 
-    //const [projectId, setprojectId] = useState(null);
-
     const [code, setCode] = useState("");
 
     let promptGeminiImage;
@@ -182,37 +180,6 @@ const Image2Code = () => {
         }
     };
 
-    /*const sendRequestToSaveJson = async (projectIdS, jsonDataS, jsonTypeS) => {
-        try {
-            const response = await axios.post(
-                api_baseurl + "/api/image2code/json",
-                {
-                    projectId: projectIdS,
-                    jsonData: jsonDataS,
-                    jsonType: jsonTypeS
-                }
-            );
-            return response.data;
-        } catch (error) {
-            throw error;
-        }
-    };
-    const sendRequestToSaveHtml = async (projectIdS, htmlDataS, htmlTypeS) => {
-        try {
-            const response = await axios.post(
-                api_baseurl + "/api/image2code/html",
-                {
-                    projectId: projectIdS,
-                    htmlData: htmlDataS,
-                    htmlType: htmlTypeS
-                }
-            );
-            return response.data;
-        } catch (error) {
-            throw error;
-        }
-    };*/
-
     const [imageGeneratedPreviewUrl, setImageGeneratedPreviewUrl] =
         useState(null);
 
@@ -319,10 +286,7 @@ const Image2Code = () => {
                         }
                     }
                 );
-                //let tempProjectId = postDetails.data.data._id.toString();
-                //setprojectId(tempProjectId);
                 }catch(e){
-                  //setprojectId(null)
                 }
                 try {
                     setprocessText("Analyzing image");
@@ -400,13 +364,6 @@ const Image2Code = () => {
                     }
 
                     const rawJsonData = JSON.parse(JSON.stringify(jsonData));
-
-                    /*const saveRawJsonFile = await sendRequestToSaveJson(
-                        tempProjectId,
-                        rawJsonData,
-                        "raw"
-                    );*/
-
                     setprocessText("Generating internal images");
                     setprocessStatus(85);
                     const altObjects = findAltAttributes(jsonData.html);
@@ -414,11 +371,7 @@ const Image2Code = () => {
                     await updateSrcAttributes(altObjects);
 
                     const finalJsonData = JSON.parse(JSON.stringify(jsonData));
-                  /*  const saveFinalJsonFile = await sendRequestToSaveJson(
-                        tempProjectId,
-                        finalJsonData,
-                        "final"
-                    ); */
+                    
                     setprocessText("Generating code");
                     setprocessStatus(90);
                     const rawHtmlData = await generateHtml(finalJsonData);
@@ -427,11 +380,6 @@ const Image2Code = () => {
                         throw "Error1 generating html file";
                     }
 
-                  /*  const saveRawHtmlFile = await sendRequestToSaveHtml(
-                        tempProjectId,
-                        rawHtmlData,
-                        "raw"
-                    ); */
                     let finalHtmlData;
                     try {
                         if (cssFw || promptFunc) {
@@ -466,14 +414,8 @@ const Image2Code = () => {
                         } else {
                             finalHtmlData = rawHtmlData;
                         }
-
-                    /*const saveFinalHtmlFile = await sendRequestToSaveHtml(
-                            tempProjectId,
-                            finalHtmlData,
-                            "final"
-                        );*/
                     } catch (e) {
-                      //  const saveFinalHtmlFile = await sendRequestToSaveHtml(  tempProjectId, rawHtmlData,"final");
+                      
                         finalHtmlData = rawHtmlData;
                     }
                     setCode(finalHtmlData);
