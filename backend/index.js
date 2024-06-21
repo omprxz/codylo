@@ -23,9 +23,8 @@ const Image2CodeModel = require("./db/Image2Code");
 const port = process.env.PORT || 3300;
 const app = express();
 app.use(express.json({ limit: "50mb" }));
-app.use(bodyParser.json());
-const corsOptions = {
-    origin: "http://localhost:3000",
+app.use(bodyParser.json());const corsOptions = {
+    origin: ["http://localhost:3000", "https://codylo.vercel.app"],
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type", "Authorization"],
     optionsSuccessStatus: 200
