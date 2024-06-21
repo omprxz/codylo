@@ -11,12 +11,12 @@ import {
 } from "react-icons/fa";
 import "./image2code.css";
 import OptimizeHtml from "./i2cOptimizeRawHtml";
-import LoaderWavy from "./LoaderWavy";
-import TicTacToe from "./fun/tictactoe.js";
+import TicTacToe from "./fun/tictactoe";
+import Mic from "./mic";
 
 const Image2Code = () => {
-    const imgbb_apis = process.env.REACT_APP_IMGBB_API_KEYS.split(',');
-    const imgbb_api = imgbb_apis[0].trim()
+    const imgbb_apis = process.env.REACT_APP_IMGBB_API_KEYS.split(",");
+    const imgbb_api = imgbb_apis[0].trim();
     const api_baseurl =
         window.location.hostname === "localhost"
             ? process.env.REACT_APP_API_BASEURL_LOCAL
@@ -124,7 +124,7 @@ const Image2Code = () => {
             );
             return response.data.data.url;
         } catch (e) {
-          console.log(e)
+            console.log(e);
             throw e;
             return;
         }
@@ -147,12 +147,7 @@ const Image2Code = () => {
         reader.readAsDataURL(file);
     };
 
-    const getJsonFromGemini = async (
-        fileG,
-        widthG,
-        heightG,
-        bgcolorG
-    ) => {
+    const getJsonFromGemini = async (fileG, widthG, heightG, bgcolorG) => {
         try {
             const formDataGemini = new FormData();
             formDataGemini.append("file", fileG);
@@ -276,21 +271,25 @@ const Image2Code = () => {
             try {
                 setprocessText("Saving details");
                 setprocessStatus(30);
-                try{
-                const postDetails = await axios.post(
-                    api_baseurl + "/api/image2code",
-                    postData,
-                    {
-                        headers: {
-                            "Content-Type": "application/json"
-                        }
-                    }
-                );
-                }catch(e){
-                }
                 try {
+                    const postDetails = await axios.post(
+                        api_baseurl + "/api/image2code",
+                        postData,
+                        {
+                            headers: {
+                                "Content-Type": "application/json"
+                            }
+                        }
+                    );
+                } catch (e) {}
+                try {
+                    let interval;
                     setprocessText("Analyzing image");
-                    setprocessStatus(55);
+                    interval = setTimeout(function () {
+                        setprocessText("Image analyzing almost done");
+                        setprocessStatus(55);
+                    }, 10000);
+                    setprocessStatus(70);
 
                     let geminiImage2JsonData = await getJsonFromGemini(
                         file,
@@ -306,6 +305,7 @@ const Image2Code = () => {
                             maxColor.hex
                         );
                     }
+                    clearInterval(interval);
                     let jsonData;
                     let jsonRegex = /```json\s([\s\S]*?)```/g;
                     try {
@@ -331,8 +331,14 @@ const Image2Code = () => {
                                     maxColor.hex
                                 );
                                 if (!geminiImage2JsonData) {
-        geminiImage2JsonData = await getJsonFromGemini( file, width, height, maxColor.hex);
-                  }
+                                    geminiImage2JsonData =
+                                        await getJsonFromGemini(
+                                            file,
+                                            width,
+                                            height,
+                                            maxColor.hex
+                                        );
+                                }
 
                                 try {
                                     jsonData = JSON.parse(geminiImage2JsonData);
@@ -365,13 +371,17 @@ const Image2Code = () => {
 
                     const rawJsonData = JSON.parse(JSON.stringify(jsonData));
                     setprocessText("Generating internal images");
-                    setprocessStatus(85);
+                    setprocessStatus(80);
+                    interval = setTimeout(function () {
+                        setprocessText("Image generating almost done");
+                        setprocessStatus(55);
+                    }, 8000);
                     const altObjects = findAltAttributes(jsonData.html);
 
                     await updateSrcAttributes(altObjects);
-
+                    clearInterval(interval);
                     const finalJsonData = JSON.parse(JSON.stringify(jsonData));
-                    
+
                     setprocessText("Generating code");
                     setprocessStatus(90);
                     const rawHtmlData = await generateHtml(finalJsonData);
@@ -384,16 +394,19 @@ const Image2Code = () => {
                     try {
                         if (cssFw || promptFunc) {
                             let customInst = "";
+                            customInst +=
+                                "\nImagine you're a seasoned pro in HTML, CSS, and JavaScript, including various CSS frameworks.\nPlease must follow these extra custom instructions while generating the final HTML output code:\n-Final output html code must have to in html code block like in this structure:\n\`\`\`html\nHtml output code goes here...\n\`\`\`\nMust follow this output structure (don't give output html code without code block.\n-What is the fullform of HTML";
+
                             customInst += cssFw
-                                ? `\nPlease follow these additional custom instructions while generating the final output: 1) Include the ${cssFw} framework for CSS and use it for most of the styling. 2) Use CSS styling only if specific styling is not achievable with this framework.`
+                                ? `\n- Include and use ${cssFw} framework for styling.\n- Use CSS styling only if specific styling is not achievable with this framework.`
                                 : "";
 
                             let useJqueryPrompt = usingJquery
-                                ? "\nNOTE:- Use jQuery for javascript part and include jquery script tag in the json structure"
+                                ? "\nNOTE: Use jQuery instead of pure JavaScript and include jQuery CDN link too."
                                 : "";
 
                             customInst += promptFunc
-                                ? `3) Add Javascript functionality too in this output json structure and keep the script codes too embedded in single and give final all code as in file code json structure.\nHere's the functionality instructions:\n ${promptFunc}${useJqueryPrompt}`
+                                ? `\n- Add JavaScript functionality in this output HTML code and embed the script code within the single HTML file.\nHere's the functionality instructions:\n${promptFunc}${useJqueryPrompt}\nStart now`
                                 : "";
 
                             setprocessText("Adding frameworks and libraries");
@@ -415,7 +428,6 @@ const Image2Code = () => {
                             finalHtmlData = rawHtmlData;
                         }
                     } catch (e) {
-                      
                         finalHtmlData = rawHtmlData;
                     }
                     setCode(finalHtmlData);
@@ -452,10 +464,10 @@ const Image2Code = () => {
             setalertMsg(submit);
         } catch (e) {
             setalertMsg("Something went wrong: ", e);
-            setFile(null)
-            setFilename(null)
-            setImagePreviewUrl(null)
-            setmimeType(null)
+            setFile(null);
+            setFilename(null);
+            setImagePreviewUrl(null);
+            setmimeType(null);
         }
         setisProcessing(false);
         setprocessText("");
@@ -564,13 +576,22 @@ const Image2Code = () => {
                             <div className="relative w-11 h-6 bg-gray-700 rounded-full peer peer-focus:ring-4 peer-focus:ring-emerald-900 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all border-gray-600 peer-checked:bg-green-500"></div>
                         </label>
                         {usingFunc && (
-                            <textarea
-                                rows="5"
-                                placeholder="Describe your script functionality"
-                                className={`form-textarea block w-full px-4 pe-10 py-2 mt-2 rounded-md bg-gray-800 text-white focus:outline-none focus:bg-gray-800 min-h-[120px] border-none`}
-                                value={promptFunc}
-                                onChange={handleFuncPrompt}
-                            ></textarea>
+                            <div className="relative">
+                                <Mic
+                                    className={`absolute bottom-1.5 right-1.5 z-10 mic-container text-center`}
+                                    iconClassName={`text-white text-[1.35rem]`}
+                                    setAlertMsg={setalertMsg}
+                                    setText={setpromptFunc}
+                                />
+
+                                <textarea
+                                    rows="5"
+                                    placeholder="Describe your script functionality"
+                                    className={`form-textarea block w-full px-4 pe-10 py-2 mt-2 rounded-md bg-gray-800 text-white focus:outline-none focus:bg-gray-800 min-h-[120px] border-none`}
+                                    value={promptFunc}
+                                    onChange={handleFuncPrompt}
+                                ></textarea>
+                            </div>
                         )}
                     </div>
                 }
@@ -656,10 +677,17 @@ const Image2Code = () => {
                                 <FaRegSmileWink className="inline-block mx-1" />
                             </p>
                         </div>
-                        <div className="fixed text-white translate-x-[-50%] bottom-5 left-[50%] z-30">
-                            <div className="flex flex-col justify-center items-center gap-1.5 text-center">
-                                <LoaderWavy className="" />
-                                <span>{processStatus}%</span>
+                        <div className="fixed text-white translate-x-[-50%] bottom-5 left-[50%] z-30 w-full px-3">
+                            <div className="flex flex-col justify-center items-center gap-1.5 text-center min-w-full">
+                                <div className="mb-5 h-4 overflow-hidden rounded-full min-w-full bg-gray-200">
+                                    <div
+                                        className="h-4 animate-pulse rounded-full bg-gradient-to-r from-green-500 to-blue-500 text-sm flex justify-center items-center"
+                                        style={{ width: processStatus + "%" }}
+                                    >
+                                        {" "}
+                                        <span>{processStatus}%</span>
+                                    </div>
+                                </div>
                                 <span>{processText}</span>
                             </div>
                         </div>

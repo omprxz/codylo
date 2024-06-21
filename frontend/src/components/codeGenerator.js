@@ -14,7 +14,6 @@ import 'animate.css';
 import { generateCodePrompt } from './prompts';
 import Gemini from './gemini';
 import Mic from './mic';
-import { MdMicNone } from "react-icons/md";
 import './codeGenerator.css';
 
 function GenerateCode() {
@@ -270,7 +269,7 @@ function GenerateCode() {
 
         <textarea id="user_prompt" rows="5" placeholder="Describe what you want" className={`form-textarea block w-full px-4 pe-10 py-2 mt-1 rounded-md bg-gray-800 text-white focus:outline-none focus:bg-gray-800 min-h-[120px] ${alertMsg == 'Prompt is empty.' ? 'border-red-600 bg-red-200 ring-2 ring-red-300 placeholder:text-gray-700 focus:placeholder:text-gray-500 animate__animated animate__headShake': 'border-none'}`} value={user_prompt} onChange={handleUserPrompt}></textarea>
       </div>
-      <p className="text-red-600 ms-1 mt-2">
+      <p className="text-red-600 ms-1 mt-2 text-center">
         {alertMsg}
       </p>
     </div>

@@ -33,7 +33,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 let MONGO_URI;
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV == 'production') {
   MONGO_URI = process.env.MONGO_URI;
 } else {
   MONGO_URI = process.env.MONGO_URI_LOCAL;
@@ -41,7 +41,7 @@ if (process.env.NODE_ENV === 'production') {
 
 async function connectToDatabase() {
     try {
-        await mongoose.connect("mongodb+srv://omprxz:Om.2005@codylo.69cblos.mongodb.net/codylo?retryWrites=true&w=majority&appName=codylo", {
+        await mongoose.connect(MONGO_URI, {
             useNewUrlParser: true,
             useUnifiedTopology: true
         });

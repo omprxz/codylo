@@ -17,6 +17,7 @@ const Mic = ({ className, iconClassName, setAlertMsg, setText }) => {
             recognitionRef.current.stop();
             setMicActive(false);
         } else {
+          setMicActive(true)
             const recognition = new window.webkitSpeechRecognition();
             recognition.continuous = false;
             recognition.interimResults = false;
