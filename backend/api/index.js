@@ -222,7 +222,7 @@ app.post(
             }
             
             async function getFileFromUrl(img, filename) {
-    const dirPath = '/tmp/uploads/img2code/prompt_images/';
+    const dirPath = '/tmp/uploads/image2code/prompt_images/';
     const filePath = path.join(dirPath, filename);
 
     if (!fs.existsSync(dirPath)) {
