@@ -220,8 +220,9 @@ app.post(
                 );
                 return file;
             }
+            
             async function getFileFromUrl(img, filename) {
-    const dirPath = '/tmp/uploads/img2code/prompt_images';
+    const dirPath = '/tmp/uploads/img2code/prompt_images/';
     const filePath = path.join(dirPath, filename);
 
     if (!fs.existsSync(dirPath)) {
@@ -243,9 +244,12 @@ app.post(
         writer.on('error', reject);
     });
 }
-            
+            try{
             await getFileFromUrl(promptImgs[0], "1.png")
             await getFileFromUrl(promptImgs[1], "2.png")
+            } catch(e){
+              console.log(e)
+            }
 
             const uploadedFilePath = path.join("/tmp/uploads/image2code/original_images/",
                 uploadedFileName
