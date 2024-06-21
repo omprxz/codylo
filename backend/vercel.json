@@ -1,16 +1,11 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "./index.js",
-      "use": "@vercel/node",
-      "functions": {
-        "controllers/*.js": { "maxDuration": 60 },
-        "middleware/**/*.js": { "maxDuration": 60 }
-      }
-    }
+  "rewrites": [
+    { "source": "/(.*)", "destination": "index.js" }
   ],
-  "routes": [
-    { "src": "/(.*)", "dest": "/server.js" }
-  ]
+  "functions": {
+    "*.js": {
+      "memory": 3009,
+      "maxDuration": 60
+    }
+  }
 }
