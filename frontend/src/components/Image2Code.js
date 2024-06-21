@@ -268,7 +268,7 @@ const Image2Code = () => {
                 setprocessText("Saving details");
                 setprocessStatus(30);
                 try {
-                    const postDetails = await axios.post(
+                    const postDetails = axios.post(
                         api_baseurl + "/api/image2code",
                         postData,
                         {
@@ -665,7 +665,7 @@ const Image2Code = () => {
                             <div className="flex flex-col justify-center items-center gap-1.5 text-center min-w-full">
                                 <div className="mb-5 h-4 overflow-hidden rounded-full min-w-full bg-gray-200">
                                     <div
-                                        className="h-4 animate-pulse rounded-full bg-gradient-to-r from-green-500 to-blue-500 text-sm flex justify-center items-center transition transition-all duration-200"
+                                        className="h-4 animate-pulse rounded-full bg-gradient-to-r from-green-500 to-blue-500 text-sm flex justify-center items-center transition transition-all duration-500"
                                         style={{ width: processStatus + "%" }}
                                     >
                                         {" "}
