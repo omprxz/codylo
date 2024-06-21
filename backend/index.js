@@ -23,14 +23,14 @@ const Image2CodeModel = require("./db/Image2Code");
 const port = process.env.PORT || 3300;
 const app = express();
 app.use(express.json({ limit: "50mb" }));
-app.use(bodyParser.json());const corsOptions = {
+app.use(bodyParser.json());
+const corsOptions = {
     origin: ["http://localhost:3000", "https://codylo.vercel.app"],
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type", "Authorization"],
     optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
-//app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 
 let MONGO_URI;
 if (process.env.NODE_ENV === 'production') {
@@ -52,6 +52,8 @@ async function connectToDatabase() {
 }
 
 connectToDatabase();
+//app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
+
 
 const geminiApiKeys = process.env.GEMINI_API_KEYS.split(',');
 const geminiApiKey = geminiApiKeys[2].trim()
@@ -83,50 +85,50 @@ const uploadGemini = multer({
 });
 
 const saveFeedback = async (name, email, feedback) => {
-    const newFeedback = new Feedback({ name, email, feedback });
-    newFeedback
-        .save()
-        .then((fb) => {
-            console.log(fb);
-            return fb;
-        })
-        .catch((err) => console.log(err));
+    try {
+        const newFeedback = await Feedback.create({ name, email, feedback });
+        console.log(newFeedback);
+        return newFeedback;
+    } catch (err) {
+        console.error("Error saving feedback:", err);
+        throw err; // Re-throw the error to be caught by the caller
+    }
 };
 
 async function sendEmail(name, email, text, recipientEmail, from, passPath) {
     const password = process.env[passPath];
 
     let subject = `New suggestion from Codylo user - ${name}`;
-    let content = `Message: ${text}\n\nName: ${name}\nEmail: ${email} \n
-    `;
+    let content = `Message: ${text}\n\nName: ${name}\nEmail: ${email}\n`;
+
     const transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
         port: 465,
         secure: true,
         auth: {
             user: from,
-            pass: password
-        }
+            pass: password,
+        },
     });
 
     const message = {
         from: from,
         to: recipientEmail,
         subject: subject,
-        text: content
+        text: content,
     };
 
     try {
         const info = await transporter.sendMail(message);
         const newFb = await saveFeedback(name, email, text);
-        return { message: "Email sent successfully", status:"success", data: newFb };
+        return { message: "Email sent!", status: "success", data: newFb };
     } catch (err) {
-        throw err;
+        console.error("Error sending email or saving feedback:", err);
+        throw err; // Re-throw the error to be caught by the caller
     }
 }
 
 // APIS >>
-
 app.post("/api/sendFeedbackMail", async (req, res) => {
     const { name, email, text } = req.body;
 
@@ -139,9 +141,10 @@ app.post("/api/sendFeedbackMail", async (req, res) => {
             "ompkr69@gmail.com",
             "GMAIL_APP_PASSWORD_FB"
         );
-        res.json(result);
+        res.json(result); 
     } catch (err) {
-        res.status(500).json({ error: "Failed to send email" });
+        console.error("Failed to send email or save feedback:", err);
+        res.status(500).json({ error: "Failed to send email or save feedback" });
     }
 });
 
