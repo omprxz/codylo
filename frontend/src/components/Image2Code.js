@@ -13,6 +13,7 @@ import "./image2code.css";
 import OptimizeHtml from "./i2cOptimizeRawHtml";
 import TicTacToe from "./fun/tictactoe";
 import Mic from "./mic";
+import { MdMicNone } from 'react-icons/md';
 
 const Image2Code = () => {
     const imgbb_apis = process.env.REACT_APP_IMGBB_API_KEYS.split(",");
@@ -25,11 +26,10 @@ const Image2Code = () => {
     const [ipAddress, setipAddress] = useState("");
     const [alertMsg, setalertMsg] = useState("");
 
-    const [file, setFile] = useState(null);
+    const [file, setFile] = useState("");
     const [mimeType, setmimeType] = useState("");
     const [imageurl, setimageurl] = useState("");
     const [imagePreviewUrl, setImagePreviewUrl] = useState("");
-    const [imagePreviewUrl2, setImagePreviewUrl2] = useState("");
     const [filename, setFilename] = useState("");
     const [width, setwidth] = useState(null);
     const [height, setheight] = useState(null);
@@ -79,7 +79,6 @@ const Image2Code = () => {
             const reader = new FileReader();
             reader.onloadend = () => {
                 setImagePreviewUrl(reader.result);
-                setImagePreviewUrl2(reader.result);
             };
             reader.readAsDataURL(selectedFile);
             await getDimensions(selectedFile);
@@ -174,9 +173,6 @@ const Image2Code = () => {
             return null;
         }
     };
-
-    const [imageGeneratedPreviewUrl, setImageGeneratedPreviewUrl] =
-        useState(null);
 
     function findAltAttributes(json) {
         let altObjects = [];
@@ -374,7 +370,7 @@ const Image2Code = () => {
                     setprocessStatus(80);
                     interval = setTimeout(function () {
                         setprocessText("Image generating almost done");
-                        setprocessStatus(55);
+                        setprocessStatus(85);
                     }, 8000);
                     const altObjects = findAltAttributes(jsonData.html);
 
@@ -392,37 +388,25 @@ const Image2Code = () => {
 
                     let finalHtmlData;
                     try {
-                        if (cssFw || promptFunc) {
-                            let customInst = "";
-                            customInst +=
-                                "\nImagine you're a seasoned pro in HTML, CSS, and JavaScript, including various CSS frameworks.\nPlease must follow these extra custom instructions while generating the final HTML output code:\n-Final output html code must have to in html code block like in this structure:\n\`\`\`html\nHtml output code goes here...\n\`\`\`\nMust follow this output structure (don't give output html code without code block.\n-What is the fullform of HTML";
+                        if (cssFw != "" || promptFunc != "") {
+            let customInst = "";
+              customInst += "\nImagine you're a seasoned pro in HTML, CSS, and JavaScript, including various CSS frameworks.\nPlease must follow these extra custom instructions while generating the final HTML output code:\n-Final output html code must have to in html code block like in this structure:\n\`\`\`html\nHtml output code goes here...\n\`\`\`\nMust follow this output structure (don't give output html code without code block.\n-What is the fullform of HTML";
 
-                            customInst += cssFw
-                                ? `\n- Include and use ${cssFw} framework for styling.\n- Use CSS styling only if specific styling is not achievable with this framework.`
-                                : "";
+            customInst += cssFw ? `\n- Include and use ${cssFw} framework for styling.\n- Use CSS styling only if specific styling is not achievable with this framework.`  : "";
 
-                            let useJqueryPrompt = usingJquery
-                                ? "\nNOTE: Use jQuery instead of pure JavaScript and include jQuery CDN link too."
-                                : "";
+      let useJqueryPrompt = usingJquery ? "NOTE: Use jQuery instead of pure JavaScript and include jQuery CDN link too." : "";
 
-                            customInst += promptFunc
-                                ? `\n- Add JavaScript functionality in this output HTML code and embed the script code within the single HTML file.\nHere's the functionality instructions:\n${promptFunc}${useJqueryPrompt}\nStart now`
-                                : "";
-
-                            setprocessText("Adding frameworks and libraries");
-                            setprocessStatus(95);
-                            let finalHtmlResp = await OptimizeHtml(
-                                rawHtmlData,
-                                customInst
-                            );
-
-                            let htmlRegex = /```html\s([\s\S]*?)```/g;
+       customInst += promptFunc ? `\n- Add JavaScript functionality in this output HTML code and embed the script code within the single HTML file.\nHere's the functionality instructions:\n${promptFunc}\n${useJqueryPrompt}\nStart now` : "";
+           setprocessText("Adding frameworks and libraries");
+             setprocessStatus(95);
+          let finalHtmlResp = await OptimizeHtml(rawHtmlData, customInst );
+ let htmlRegex = /```html\s([\s\S]*?)```/g;
                             let matchedHtml = htmlRegex.exec(finalHtmlResp);
 
                             if (matchedHtml) {
-                                finalHtmlData = matchedHtml[1];
+                       finalHtmlData = matchedHtml[1];
                             } else {
-                                finalHtmlData = rawHtmlData;
+                  finalHtmlData = rawHtmlData;
                             }
                         } else {
                             finalHtmlData = rawHtmlData;
@@ -432,10 +416,10 @@ const Image2Code = () => {
                     }
                     setCode(finalHtmlData);
                     //Reset form
-                    setFile(null);
-                    setImagePreviewUrl(null);
-                    setFilename(null);
-                    setmimeType(null);
+                    setFile("");
+                    setImagePreviewUrl("");
+                    setFilename("");
+                    setmimeType("");
                     setusingFunc(false);
                     setpromptFunc("");
                     setcssFw("");
@@ -464,10 +448,10 @@ const Image2Code = () => {
             setalertMsg(submit);
         } catch (e) {
             setalertMsg("Something went wrong: ", e);
-            setFile(null);
-            setFilename(null);
-            setImagePreviewUrl(null);
-            setmimeType(null);
+            setFile("");
+            setFilename("");
+            setImagePreviewUrl("");
+            setmimeType("");
         }
         setisProcessing(false);
         setprocessText("");
@@ -681,7 +665,7 @@ const Image2Code = () => {
                             <div className="flex flex-col justify-center items-center gap-1.5 text-center min-w-full">
                                 <div className="mb-5 h-4 overflow-hidden rounded-full min-w-full bg-gray-200">
                                     <div
-                                        className="h-4 animate-pulse rounded-full bg-gradient-to-r from-green-500 to-blue-500 text-sm flex justify-center items-center"
+                                        className="h-4 animate-pulse rounded-full bg-gradient-to-r from-green-500 to-blue-500 text-sm flex justify-center items-center transition transition-all duration-200"
                                         style={{ width: processStatus + "%" }}
                                     >
                                         {" "}

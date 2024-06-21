@@ -14,6 +14,7 @@ import 'animate.css';
 import { generateCodePrompt } from './prompts';
 import Gemini from './gemini';
 import Mic from './mic';
+import { MdMicNone } from "react-icons/md";
 import './codeGenerator.css';
 
 function GenerateCode() {

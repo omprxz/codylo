@@ -32,16 +32,16 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
-let MONGO_URI;
-if (process.env.NODE_ENV == 'production') {
-  MONGO_URI = process.env.MONGO_URI;
+let CUR_MONGO_URI;
+if (process.env.DEPLOYED == 'yes') {
+  CUR_MONGO_URI = process.env.MONGO_URI;
 } else {
-  MONGO_URI = process.env.MONGO_URI_LOCAL;
+  CUR_MONGO_URI = process.env.MONGO_URI_LOCAL;
 }
 
 async function connectToDatabase() {
     try {
-        await mongoose.connect(MONGO_URI, {
+        await mongoose.connect(CUR_MONGO_URI, {
             useNewUrlParser: true,
             useUnifiedTopology: true
         });
@@ -118,7 +118,12 @@ async function sendEmail(name, email, text, recipientEmail, from, passPath) {
 
     try {
         const info = await transporter.sendMail(message);
-        const newFb = await saveFeedback(name, email, text);
+        let newFb;
+        try{
+         newFb = await saveFeedback(name, email, text);
+        }catch(e){
+          newFb = 'Not save to database.'
+        }
         return { message: "Email sent!", status: "success", data: newFb };
     } catch (err) {
         console.error("Error sending email or saving feedback:", err);

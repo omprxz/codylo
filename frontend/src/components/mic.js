@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { MdMicNone } from 'react-icons/md';
 import './Mic.css';
 
@@ -57,7 +57,7 @@ const Mic = ({ className, iconClassName, setAlertMsg, setText }) => {
 
     return (
       <>
-        <div className={`${className} ${micActive ? 'mic-containerAnimate' : ''}`}>
+        <div className={`${className} ${micActive ? 'mic-containerAnimate' : ''}`} onClick={handleMic}>
             <div className="circle"></div>
             <div className="circle"></div>
             <div className="circle"></div>

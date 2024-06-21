@@ -5,7 +5,6 @@ import {
 } from "@google/generative-ai";
 
 const OptimizeHtml = async (rawHtml, prompt, useModel="gemini-1.5-flash") =>{
-  console.log(prompt, rawHtml)
   const gemini_apis = process.env.REACT_APP_GEMINI_API.split(',')
   const gemini_api = gemini_apis[3].trim()
   const genAI = new GoogleGenerativeAI(gemini_api);
@@ -47,9 +46,12 @@ const OptimizeHtml = async (rawHtml, prompt, useModel="gemini-1.5-flash") =>{
     ],
     history: [],
   });
-  
+  try{
   const result = await chatSession.sendMessage(prompt+"\n\n"+rawHtml);
   return result.response.text()
+  }catch(e){
+    return 'Error occured whie optimizing html'
+  }
   
 }
 

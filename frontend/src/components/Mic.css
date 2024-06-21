@@ -1,7 +1,6 @@
 .mic-container {
-    position: relative;
-    width: 35px;
-    height: 35px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     background-color: hsl(224, 76.3%, 48%);
 }
@@ -13,11 +12,15 @@
     top: 0;
     border-radius: 50%;
     background-color: transparent;
-    border: solid 2px hsl(224, 76.3%, 48%);
+    border: solid 1px hsl(224, 76.3%, 48%);
     z-index: 5;
 }
+.mic-containerAnimate{
+    animation: faedinout 2s ease-in-out infinite;
+}
 .mic-containerAnimate .circle{
-    animation: pulse 2s infinite ease-in-out;
+    animation: pulse 2s ease-in-out infinite;
+    border: solid 1px hsl(0, 84.2%, 60.2%);
 }
 
 .mic-container .mic{
@@ -46,4 +49,16 @@
     100% {
         transform: scale(0.7);
     }
+}
+
+@keyframes fadeinout {
+  0%{
+    opacity: 0.5;
+  }
+  50%{
+    opacity: 1;
+  }
+  100%{
+    opacity: 0.5;
+  }
 }
