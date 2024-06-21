@@ -109,7 +109,7 @@ async function sendEmail(name, email, text, recipientEmail, from, passPath) {
     try {
         const info = await transporter.sendMail(message);
         const newFb = await saveFeedback(name, email, text);
-        return { message: "Email sent successfully", status:"success" };
+        return { message: "Email sent successfully", status:"success", data: newFb };
     } catch (err) {
         throw err;
     }
