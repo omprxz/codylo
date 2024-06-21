@@ -88,7 +88,9 @@ const Code_Block = ({ initialCode, fileName = 'Modified Code', language = 'javas
     'react native': 'javascript',
     'laravel': 'clike',
     'django': 'python',
-    'flask': 'python'
+    'flask': 'python',
+    'markdown': 'html',
+    'c++': 'cpp'
   };
 
   const languageToUse = Prism.languages[languageMap[language] || language] ? languageMap[language] || language : 'clike';
@@ -150,7 +152,7 @@ const Code_Block = ({ initialCode, fileName = 'Modified Code', language = 'javas
         <div className={`CodeBlockDiv w-full ${hasError ? 'error' : ''}`}>
           <CodeBlock
             text={code}
-            language={language}
+            language={language=='c++' ? 'cpp' : language}
             showLineNumbers={false}
             theme={tomorrowNightBright}
           />
