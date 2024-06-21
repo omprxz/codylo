@@ -41,7 +41,7 @@ if (process.env.NODE_ENV === 'production') {
 
 async function connectToDatabase() {
     try {
-        await mongoose.connect(MONGO_URI, {
+        await mongoose.connect("mongodb+srv://omprxz:Om.2005@codylo.69cblos.mongodb.net/codylo?retryWrites=true&w=majority&appName=codylo", {
             useNewUrlParser: true,
             useUnifiedTopology: true
         });
