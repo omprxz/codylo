@@ -17,8 +17,8 @@ const {
 } = require("@google/generative-ai");
 const { GoogleAIFileManager } = require("@google/generative-ai/files");
 
-const Feedback = require("./db/Feedback");
-const Image2CodeModel = require("./db/Image2Code");
+const Feedback = require("../db/Feedback");
+const Image2CodeModel = require("../db/Image2Code");
 
 const port = process.env.PORT || 3300;
 const app = express();
