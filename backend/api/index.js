@@ -65,13 +65,13 @@ const absoluteUploadDir = path.join("/tmp", uploadDirOriginalImages);
 if (!fs.existsSync(absoluteUploadDir)) {
     fs.mkdirSync(absoluteUploadDir, { recursive: true });
 }
+
 const uploadGemini = multer({
     storage: multer.diskStorage({
         destination: function (req, file, cb) {
             cb(null, "/tmp/uploads/image2code/original_images/");
         },
         filename: function (req, file, cb) {
-            const projectId = req.body.projectId;
             const extension = path.extname(file.originalname);
             cb(
                 null,
@@ -164,7 +164,7 @@ app.get("/api/proxy-image", async (req, res) => {
         res.status(500).send("Error fetching image: " + error.message);
     }
 });
-
+/*
 app.post("/api/image2code", async (req, res) => {
     const { imageurl, functionality, cssframework, bgcolor, usejquery, ip } =
         req.body;
@@ -190,7 +190,7 @@ app.post("/api/image2code", async (req, res) => {
         data: saveToDb
     });
 });
-
+*/
 app.post(
     "/api/gemini/image2json",
     uploadGemini.single("file"),
@@ -204,7 +204,6 @@ app.post(
         }
 
         try {
-            const projectId = req.body.projectId;
 
             const genAI = new GoogleGenerativeAI(geminiApiKey);
             const fileManager = new GoogleAIFileManager(geminiApiKey);
@@ -450,7 +449,7 @@ app.post(
         }
     }
 );
-
+/*
 app.post("/api/image2code/json", (req, res) => {
     const { projectId, jsonData, jsonType } = req.body;
 
@@ -476,7 +475,7 @@ app.post("/api/image2code/json", (req, res) => {
         res.status(200).send("JSON data saved successfully");
     });
 });
-
+*/
 app.post("/api/text2image/replicate", async (req, res) => {
     try {
       
@@ -509,7 +508,7 @@ const replicate = new Replicate({
         });
     }
 });
-
+/*
 app.post("/api/image2code/html", (req, res) => {
     const { projectId, htmlData, htmlType } = req.body;
 
@@ -535,7 +534,7 @@ app.post("/api/image2code/html", (req, res) => {
         res.status(200).send("HTML data saved successfully");
     });
 });
-
+*/
 // << APIS
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
