@@ -33,9 +33,16 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
+let MONGO_URI;
+if(process.env.NODE_ENV == 'production'){
+  MONGO_URI = process.env.MONGO_URI
+}else{
+  MONGO_URI = process.env.MONGO_URI_LOCAL
+}
+
 async function connectToDatabase() {
     try {
-        await mongoose.connect(process.env.MONGO_URI, {
+        await mongoose.connect(MONGO_URI, {
         });
         console.log('Connected to the database');
     } catch (error) {
