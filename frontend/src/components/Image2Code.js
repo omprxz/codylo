@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import prettify from "html-prettify";
 import ImageBgDetect from "./ImageBgDetect";
 import GenerateAiImage from "./generateAiImage";
 import Code_Block from "./codeBlock";
@@ -103,12 +104,6 @@ const Image2Code = () => {
     const handleUsingJquery = () => {
         setusingJquery(!usingJquery);
     };
-    
-    function prettifyHTML(htmlString) {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(htmlString, 'text/html');
-    return new XMLSerializer().serializeToString(doc.documentElement);
-}
 
     const uploadToCloud = async (file) => {
         try {
@@ -420,7 +415,7 @@ const Image2Code = () => {
                         } else {
                             finalHtmlData = rawHtmlData;
                         }
-                  finalHtmlData = prettifyHTML(finalHtmlData)
+                  finalHtmlData = prettify(finalHtmlData)
                     setCode(finalHtmlData);
                     //Reset form
                     setFile("");
