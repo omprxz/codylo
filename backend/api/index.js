@@ -23,8 +23,6 @@ const Image2CodeModel = require("../db/Image2Code");
 const port = process.env.PORT || 3300;
 const app = express();
 
-CUR_MONGO_URI = process.env.MONGO_URI;
-
 app.use(express.json({ limit: "50mb" }));
 app.use(bodyParser.json());
 const corsOptions = {

@@ -252,12 +252,12 @@ const Image2Code = () => {
             setprocessStatus(4);
 
             setprocessText("Uploading image");
-            setprocessStatus(16);
+            setprocessStatus(5);
             let imgcloudUrl = await uploadToCloud(file);
             setimageurl(imgcloudUrl);
 
             setprocessText("Detecting background");
-            setprocessStatus(25);
+            setprocessStatus(20);
             let maxColor = await ImageBgDetect(imgcloudUrl);
             setbgColor(maxColor.hex);
 
@@ -272,7 +272,7 @@ const Image2Code = () => {
 
             try {
                 setprocessText("Saving details");
-                setprocessStatus(30);
+                setprocessStatus(35);
                 try {
                     const postDetails = axios.post(
                         api_baseurl + "/api/image2code",
@@ -569,7 +569,7 @@ const Image2Code = () => {
                         {usingFunc && (
                             <div className="relative">
                                 <Mic
-                                    className={`absolute bottom-1.5 right-1.5 z-10 mic-container text-center`}
+                                    className={`absolute bottom-1.5 right-1.5 z-10 text-center`}
                                     iconClassName={`text-white text-[1.35rem]`}
                                     setAlertMsg={setalertMsg}
                                     setText={setpromptFunc}
@@ -637,11 +637,11 @@ const Image2Code = () => {
                             </p>
                         )}
                         <button
-                            className="mt-4 border max-h-full focus:ring-4 hover:ring-4 focus:outline-none font-medium rounded-sm px-5 py-2.5 text-center mb-2 border-green-400 text-green-400 hover:ring-green-900 focus:ring-green-900 disabled:ring-0"
+                            className="mt-4 border max-h-full focus:ring-4 hover:ring-4 focus:outline-none font-medium rounded-md px-5 py-2.5 text-center mb-2 border-green-400 text-green-400 hover:ring-green-900 focus:ring-green-900 disabled:ring-0"
                             disabled={isProcessing}
                             onClick={handleSubmit}
                         >
-                            {isProcessing ? "Hold on..." : "Start Magic"}
+                            {isProcessing ? "Hold on..." : "Start Replicating"}
                         </button>
                     </div>
                 }

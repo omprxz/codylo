@@ -266,7 +266,7 @@ function GenerateCode() {
     <div>
     <div className='relative'>
 
-        <Mic className={`absolute bottom-1.5 right-1.5 z-10 mic-container text-center`} iconClassName={`text-white text-[1.35rem]`} setAlertMsg={setAlertMsg} setText={setUser_prompt} />
+        <Mic className={`absolute bg-red-600 bottom-1.5 right-1.5 z-10 text-center`} iconClassName={`text-white text-[1.35rem] text-red-600`} setAlertMsg={setAlertMsg} setText={setUser_prompt} />
 
         <textarea id="user_prompt" rows="5" placeholder="Describe what you want" className={`form-textarea block w-full px-4 pe-10 py-2 mt-1 rounded-md bg-gray-800 text-white focus:outline-none focus:bg-gray-800 min-h-[120px] ${alertMsg == 'Prompt is empty.' ? 'border-red-600 bg-red-200 ring-2 ring-red-300 placeholder:text-gray-700 focus:placeholder:text-gray-500 animate__animated animate__headShake': 'border-none'}`} value={user_prompt} onChange={handleUserPrompt}></textarea>
       </div>
@@ -275,7 +275,7 @@ function GenerateCode() {
       </p>
     </div>
     <div className="text-center">
-      <button className="border w-1/2 focus:ring-4 hover:ring-4 focus:outline-none font-medium rounded-sm px-5 py-2.5 text-center mb-2 border-green-400 text-green-400 hover:ring-green-900 focus:ring-green-900" disabled={generating} onClick={generateCode}> { generating ? 'Generating...': 'Generate Code' }</button>
+      <button className="border w-1/2 focus:ring-4 hover:ring-4 focus:outline-none font-medium rounded-md px-5 py-2.5 text-center mb-2 border-green-400 text-green-400 hover:ring-green-900 focus:ring-green-900" disabled={generating} onClick={generateCode}> { generating ? 'Generating...': 'Generate Code' }</button>
     </div>
     { resultsVisib && (<div className="results">
       <Code_Block initialCode={code} fileName={filename} language={syntaxLanguage} hasError={errorCode} showFileName={true} />
