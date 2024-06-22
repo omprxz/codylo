@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import prettify from "html-prettify";
 import ImageBgDetect from "./ImageBgDetect";
 import GenerateAiImage from "./generateAiImage";
 import Code_Block from "./codeBlock";
@@ -69,6 +68,25 @@ const Image2Code = () => {
             behavior: "smooth"
         });
     };
+    
+    function prettifyHtml(htmlContent) {
+  let indent = 0;
+  const indentChar = '  ';
+  let formattedHtml = '';
+  const htmlArray = htmlContent.replace(/>\s*</g, '><').split(/(?=<)|(?<=>)/g);
+
+  htmlArray.forEach((element) => {
+    if (element.match(/^<\/\w/)) {
+      indent--;
+    }
+    formattedHtml += `${'  '.repeat(indent)}${element}\n`;
+    if (element.match(/^<\w([^>]*[^\/])?>.*$/) && !element.match(/<br\/?>$/)) {
+      indent++;
+    }
+  });
+
+  return formattedHtml.trim();
+}
 
     const handleImageChange = async (e) => {
         const selectedFile = e.target.files[0];
@@ -415,10 +433,7 @@ const Image2Code = () => {
                         } else {
                             finalHtmlData = rawHtmlData;
                         }
-                  finalHtmlData = prettify(finalHtmlData, {
-                    char: "space",
-                    count: 3
-                    })
+                  finalHtmlData = prettifyHtml(finalHtmlData)
                     setCode(finalHtmlData);
                     //Reset form
                     setFile("");
