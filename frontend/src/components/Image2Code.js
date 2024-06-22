@@ -247,7 +247,7 @@ const Image2Code = () => {
             setprocessStatus(4);
 
             setprocessText("Uploading image");
-            setprocessStatus(5);
+            setprocessStatus(10);
             let imgcloudUrl = await uploadToCloud(file);
             setimageurl(imgcloudUrl);
 
@@ -415,7 +415,10 @@ const Image2Code = () => {
                         } else {
                             finalHtmlData = rawHtmlData;
                         }
-                  finalHtmlData = prettify(finalHtmlData)
+                  finalHtmlData = prettify(finalHtmlData, {
+                    char: "space",
+                    count: 3
+                    })
                     setCode(finalHtmlData);
                     //Reset form
                     setFile("");
