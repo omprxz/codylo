@@ -26,7 +26,7 @@ const Image2Code = () => {
     const [ipAddress, setipAddress] = useState("");
     const [alertMsg, setalertMsg] = useState("");
 
-    const [file, setFile] = useState("");
+    const [file, setFile] = useState();
     const [mimeType, setmimeType] = useState("");
     const [imageurl, setimageurl] = useState("");
     const [imagePreviewUrl, setImagePreviewUrl] = useState("");
@@ -71,7 +71,7 @@ const Image2Code = () => {
     
     function prettifyHtml(htmlContent) {
   let indent = 0;
-  const indentChar = '  ';
+  const indentChar = '    ';
   let formattedHtml = '';
   const htmlArray = htmlContent.replace(/>\s*</g, '><').split(/(?=<)|(?<=>)/g);
 
@@ -89,18 +89,20 @@ const Image2Code = () => {
 }
 
     const handleImageChange = async (e) => {
-        const selectedFile = e.target.files[0];
+        let selectedFile = e.target.files[0];
 
         if (selectedFile) {
+          console.log('fc')
             setFilename(selectedFile.name);
             setFile(selectedFile);
             setmimeType(selectedFile.type);
-            const reader = new FileReader();
+            let reader = new FileReader();
             reader.onloadend = () => {
                 setImagePreviewUrl(reader.result);
             };
             reader.readAsDataURL(selectedFile);
             await getDimensions(selectedFile);
+            e.target.value = null
         }
     };
     const handleImageClick = () => {
@@ -128,6 +130,8 @@ const Image2Code = () => {
             let formData1 = new FormData();
             formData1 = new FormData();
             formData1.append("image", file);
+            console.log("image", file);
+            formData1.append("key", imgbb_api);
             formData1.append("key", imgbb_api);
             formData1.append("expiration", 30 * 24 * 60 * 60);
 
@@ -456,7 +460,7 @@ const Image2Code = () => {
             }
         } catch (e) {
             console.log(e);
-            return "Something went wrong";
+            throw new Error("Something went wrong")
         }
     };
 
@@ -468,10 +472,6 @@ const Image2Code = () => {
             setalertMsg(submit);
         } catch (e) {
             setalertMsg("Something went wrong: ", e);
-            setFile("");
-            setFilename("");
-            setImagePreviewUrl("");
-            setmimeType("");
         }
         setisProcessing(false);
         setprocessText("");
