@@ -30,7 +30,7 @@ function Nav() {
 
   return (
     <>
-      <div className="flex justify-between items-center bg-black px-3 py-3 sticky top-0 z-10">
+      <div className="flex justify-between items-center bg-transparent px-3 py-3 sticky top-0 z-10">
         <Link to='/'>
           <FiHome className="text-white p-1 text-3xl hover:ring-4 hover:ring-gray-700 rounded" />
         </Link>

@@ -6,10 +6,11 @@ import { Link, BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Nav from './components/nav';
 // import Screen1 from './components/home2';
 import Home from './components/home';
-import About from './components/about';
+import About from './components/pages/about';
 import FeedBack from './components/feedback';
 import Image2Code from './components/Image2Code';
 import TicTacToe from './components/fun/tictactoe';
+import Page404 from './components/pages/error';
 import './App.css'
 
 function App() {
@@ -31,12 +32,13 @@ function App() {
       <FeedBack/>
       <Analytics/>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route exact path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/generatecode" element={<GenerateCode />} />
           <Route path="/fixcode" element={<FixBug />} />
           <Route path="/image2code" element={<Image2Code />} />
           <Route path="/fun/ttt" element={<TicTacToe />} />
+          <Route path="*" element={<Page404 />} />
         </Routes>
       </div>
     </Router>
