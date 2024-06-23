@@ -255,7 +255,7 @@ function FixBug() {
         </div>
         <textarea id="codeIssue" rows="3" placeholder="Describe the issues (Leave empty to fix whole code)..." className={`form-textarea block w-full px-4 py-2 rounded-md bg-gray-800 text-white focus:outline-none focus:bg-gray-800 border-none`} value={codeIssue} onChange={handleCodeIssue}></textarea>
         <div className="text-center mt-2">
-          <button className="border w-1/2 focus:ring-4 hover:ring-4 focus:outline-none font-medium rounded-md px-5 py-2.5 text-center mb-2 border-green-400 text-green-400 hover:ring-green-900 focus:ring-green-900" disabled={fixing} onClick={fixCode}> { fixing ? 'Fixing...': 'Fix Code' }</button>
+          <button className="border w-2/5 focus:ring-4 hover:ring-4 focus:outline-none font-medium rounded-md px-3 py-2.5 text-center mb-2 border-green-400 text-green-400 hover:ring-green-900 focus:ring-green-900" disabled={fixing} onClick={fixCode}> { fixing ? 'Fixing...': 'Fix Code' }</button>
         </div>
 
         { resultsVisib && (<div className="results">

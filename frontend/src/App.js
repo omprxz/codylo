@@ -4,15 +4,17 @@ import FixBug from './components/bugFixer';
 import React, {useEffect} from 'react';
 import { Link, BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Nav from './components/nav';
+// import Screen1 from './components/home2';
 import Home from './components/home';
 import About from './components/about';
 import FeedBack from './components/feedback';
 import Image2Code from './components/Image2Code';
 import TicTacToe from './components/fun/tictactoe';
+import './App.css'
 
 function App() {
   useEffect(() => {
-    if (window.location.hostname === "localhost" && !window.eruda) {
+    if (window.location.hostname === "localhost" || window.location.hostname.includes('192') && !window.eruda) {
         const script = document.createElement("script");
         script.src = "//cdn.jsdelivr.net/npm/eruda";
         document.body.appendChild(script);

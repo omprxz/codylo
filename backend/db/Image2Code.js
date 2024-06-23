@@ -5,7 +5,6 @@ const image2codeSchema = new mongoose.Schema({
   functionality: String,
   cssframework: String,
   usejquery: Boolean,
-  bgcolor: String,
   ip: String
 })
 

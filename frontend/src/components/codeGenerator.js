@@ -275,7 +275,7 @@ function GenerateCode() {
       </p>
     </div>
     <div className="text-center">
-      <button className="border w-1/2 focus:ring-4 hover:ring-4 focus:outline-none font-medium rounded-md px-5 py-2.5 text-center mb-2 border-green-400 text-green-400 hover:ring-green-900 focus:ring-green-900" disabled={generating} onClick={generateCode}> { generating ? 'Generating...': 'Generate Code' }</button>
+      <button className="border w-2/5 focus:ring-4 hover:ring-4 focus:outline-none font-medium rounded-md px-3 py-2.5 text-center mb-2 border-green-400 text-green-400 hover:ring-green-900 focus:ring-green-900" disabled={generating} onClick={generateCode}> { generating ? 'Generating...': 'Generate Code' }</button>
     </div>
     { resultsVisib && (<div className="results">
       <Code_Block initialCode={code} fileName={filename} language={syntaxLanguage} hasError={errorCode} showFileName={true} />

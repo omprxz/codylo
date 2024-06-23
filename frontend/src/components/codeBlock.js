@@ -29,6 +29,7 @@ import "prismjs/components/prism-solidity";
 import 'prismjs/themes/prism-tomorrow.css';
 
 import { FiCopy, FiEdit, FiEye, FiDownload } from 'react-icons/fi';
+import { FaCheck } from "react-icons/fa6";
 import './codeBlock.css';
 
 
@@ -122,11 +123,12 @@ const Code_Block = ({ initialCode, fileName = 'Modified Code', language = 'javas
             <p className='w-full overflow-x-scroll overflow-y-hidden'>{fileName}</p>
         </h3>
         <div className='flex justify-between gap-3.5 items-center inline-block'>
-          <button className="text-white text-sm" onClick={handleCopy}>
-            <FiCopy className='inline-block mr-[1px]' /> Copy
-          </button>
+          <span className='text-gray-400 text-sm font-medium'>Editor </span>
           <button className="text-white text-sm" onClick={() => setIsEditable(!isEditable)}>
-            {isEditable ? <> <FiEye className='inline-block mr-[1px]' /> View </> : <> <FiEdit className='inline-block mr-[1px]' /> Edit</>}
+            {isEditable ? <> <FaCheck className='inline-block mr-[1px]' /></> : <> <FiEdit className='inline-block mr-[1px]' /></>}
+          </button>
+          <button className="text-white text-sm" onClick={handleCopy}>
+            <FiCopy className='inline-block mr-[1px]' />
           </button>
           <button className="text-white text-sm" onClick={handleDownload}>
             <FiDownload className='inline-block mr-[1px]' />

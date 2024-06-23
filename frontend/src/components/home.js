@@ -2,10 +2,10 @@ import { PurpleBtn } from './buttons.js'
 
 function Home() {
   const tools = [
-    /*{
+    {
       to: '/image2code',
       text: 'Image 2 Code'
-    },*/
+    },
     {
       to: '/generatecode',
       text: 'Generate Code'
