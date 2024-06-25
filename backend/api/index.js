@@ -270,7 +270,7 @@ app.post(
           if(matchedHtml){
             htmlCode = matchedHtml[1].replace(/<!DOCTYPE html(?:\[.*?\])?>/i, '')
           }else{
-            generateCode(geminiApiKeys[geminiApiIndex[0]].trim(), uploadedFilePath, "gemini-1.5-pro")
+            generateCode(geminiApiKeys[getRandomIntegerExcluding(0, geminiApiIndex[1], geminiApiIndex[0])].trim(), uploadedFilePath, "gemini-1.5-pro")
           }
           
           return htmlCode;
@@ -278,7 +278,8 @@ app.post(
             if(e.status == 429){
               generateCode(geminiApiKeys[getRandomIntegerExcluding(0, geminiApiIndex[1], geminiApiIndex[0])].trim(), uploadedFilePath, "gemini-1.5-pro")
             }else{
-              throw "AI Model Error"
+              console.log("AI Model Error: ",e)
+              throw new Error("AI Model Error: "+e)
             }
           }
         }
@@ -293,7 +294,7 @@ app.post(
                     html: generatedHtml,
                 });
         } catch (error) {
-          console.log(error)
+                console.log(error)
                 res.json({
                   status: "error",
                   message: "Error writing code"
