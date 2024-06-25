@@ -1,4 +1,11 @@
 const mongoose = require('mongoose');
+const timestamps = require('mongoose-timestamp');
+
+mongoose.plugin(timestamps, {
+  createdAt: 'created_at',
+  updatedAt: 'updated_at',
+  currentTime: () => new Date().toLocaleString("en-US", {timeZone: "Asia/Kolkata"})
+});
 
 const image2codeSchema = new mongoose.Schema({
   imageurl: String,
