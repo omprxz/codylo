@@ -138,6 +138,7 @@ const Image2Code = () => {
       return response.data.data.url;
     } catch (e) {
       console.log(e);
+      throw e
     }
   };
 
@@ -160,6 +161,7 @@ const Image2Code = () => {
       return save;
     } catch (err) {
       console.log("Error saving to db: ", err);
+      throw "Error saving to db: "+ err;
       return null;
     }
   };
@@ -188,7 +190,7 @@ const Image2Code = () => {
         jsPrompt = "";
       }
 
-      const formDataGemini = new FormData();
+      let formDataGemini = new FormData();
       formDataGemini.append("file", fileG);
       formDataGemini.append("cssPrompt", cssPrompt);
       formDataGemini.append("jsPrompt", jsPrompt);
@@ -219,7 +221,7 @@ const Image2Code = () => {
       });
       return jsonFromHtml.data.data;
     } catch (e) {
-      throw new Error("Json 2 Html Err");
+      throw "Json 2 Html Err";
     }
   }
 
@@ -253,6 +255,7 @@ const Image2Code = () => {
         }
       } catch (error) {
         console.error(`Error fetching src for alt "${alt}": ${error.message}`);
+        throw `Error fetching src for alt "${alt}": ${error.message}`;
       }
     }
   }
@@ -284,6 +287,7 @@ const Image2Code = () => {
   };
 
   const submitAction = async () => {
+    setCode("")
     setprocessText("Checking image")
     setprocessStatus(13)
     if (!file) {
@@ -344,7 +348,7 @@ const Image2Code = () => {
                     
     } catch (e) {
       console.log(e);
-      throw new Error("Error occured :(");
+      throw "Error occured :(";
     }
   };
 
@@ -355,7 +359,7 @@ const Image2Code = () => {
       const submit = await submitAction();
       setalertMsg(submit);
     } catch (e) {
-      setalertMsg("Something went wrong: ", e);
+      setalertMsg("Something went wrong: "+ e);
     }
     setisProcessing(false);
   };

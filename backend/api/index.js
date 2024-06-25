@@ -56,7 +56,7 @@ connectToDatabase();
 
 const geminiApiKeys = process.env.GEMINI_API_KEYS.split(',');
 const geminiApiKey = geminiApiKeys[2].trim()
-const geminiApiIndex = [2, geminiApiKeys.length]
+const geminiApiIndex = [2, geminiApiKeys.length - 1]
 
 const replicateApiKeys = process.env.REPLICATE_API_TOKENS.split(',')
 const replicateApiKey = replicateApiKeys[0].trim()
@@ -193,6 +193,18 @@ app.post(
             res.status(400).json({ message: "No file uploaded" });
         }
         
+        
+        const generationConfig = {
+                    temperature: req.body.temperature || 1,
+                    topP: req.body.topP || 0.95,
+                    topK: req.body.topK || 64,
+                    maxOutputTokens: req.body.maxOutputTokens || 15000,
+                    responseMimeType: "text/plain"
+                };
+        const systemInstruction = [
+          "Generate an image that replicates the given source image with precise details. The final rendered preview must match the original image exactly.\n\nRequirements & Instructions:\n\n** Background Styles:\n"+ req.body.cssPrompt +"\n\n   - Replicate the body background styling and designs, using CSS only for its design and pattern if available, without using background images.\n - Avoid using background-image css property for images instead use html 'img' tag\n\n** Text and Fonts:\n   - Detect and apply the correct font family, size, color, weight, and style.\n   - Replicate text alignments, line heights, letter spacing, and any text decorations as seen in the image.\n\n** Icons and Images:\n   - Extract and place all icons and images accurately.\n   - Ensure icons are styled using FontAwesome 5 classes (<i> tags) and include the FontAwesome CDN link.\n\n** Layout Structure:\n   - Recreate the layout using appropriate HTML tags (divs, sections, headers, footers, etc.).\n   - Maintain correct spacing, margins, and paddings to match the original design.\n\n** Interactive Elements:\n   - Style buttons and interactive elements with accurate hover and active states.\n   - Must detect borders, shadows, and other styles of elements and texts and replicate corresponding css styling finely.\n\n** Advanced Styling:\n   - Mimic additional styling such as box shadows, border-radius, opacity, and transformations.\n   - Utilize CSS properties like flexbox or grid for layout as needed.\n\n** Responsiveness:\n   - Implement responsive designs to accommodate various screen sizes, if indicated by the image.\n\n** Color Detection and Application:\n   - Detect and apply all colors accurately (background, font, border, etc.) using the respective element's style attribute.\n\n** Unique IDs for Selectors:\n   - Assign unique but relatable \"id\" attributes to each tag and element (excluding <html>, <head>, and children) to facilitate CSS selectors.\n\n** Audio Tags:\n    - Set the \"src\" attribute value of recognized <audio> tags to \"1.mp3\".\n\n** Iframe Elements:\n    - Analyze and hypothesize related content for recognized <iframe> elements.\n    - Attach a relevant internet link to the \"src\" attribute.\n\n** Title Tag:\n    - Suggest an appropriate title for the page based on the image content and store it in the innerText of the <title> tag.\n\n** Image Descriptions:\n    - Describe images inside the given image in very detail, including image style, theme, context, and each element and background and assign it to corresponding \"alt\" attribute. But keep it inside 300 characters\n\n** Detect and recognize various colors in image and use them properly\n\n** Detect and recognize various font styles, font weight and font families and use them properly on that corresponding text\n\n** Detect and keep the alignments and position of elements properly\n\n\n** Output Format:\n    - Provide the output in a code block of HTML with embedded CSS.\n\n** Viewport width:\n    - Must add meta tag for viewport with width to device width and initial scale to 1.\n\n** Remove document type declaration:\n    - Don't include any kind of html document type declaration like '<!DOCTYPE html>'\n\n** No extra explanation:\n    - Don't give me any explanation my instructions.\n\n"+ req.body.jsPrompt +"Output Format:\n\n\\`\\`\\`html\n<html>\n <!-- IMAGE REPLICATED CODE GOES HERE... -->\n</html>\n\\`\\`\\` \n\n If anyone asks about you, don't disclose your identity that you are trained by google. Reply them that you are trained and built by Om."];
+        let reqCount = 1;
+        
         function getRandomIntegerExcluding(min, max, exclude) {
     let randomNumber;
     do {
@@ -205,7 +217,6 @@ app.post(
         async function generateCode(geminiApi, uploadedFilePath, geminiModel = "gemini-1.5-pro"){
           const genAI = new GoogleGenerativeAI(geminiApi);
           const fileManager = new GoogleAIFileManager(geminiApi);
-          
         async function uploadToGemini(filePath, mimeType) {
                 const uploadResult = await fileManager.uploadFile(filePath, {
                     mimeType,
@@ -215,17 +226,10 @@ app.post(
                 return file;
             }
           const files = [ await uploadToGemini(uploadedFilePath, mime.lookup(uploadedFilePath)) ];
-          const generationConfig = {
-                    temperature: req.body.temperature || 1,
-                    topP: req.body.topP || 0.95,
-                    topK: req.body.topK || 64,
-                    maxOutputTokens: req.body.maxOutputTokens || 15000,
-                    responseMimeType: "text/plain"
-                };
                 
           const model = genAI.getGenerativeModel({
   model: geminiModel,
-  systemInstruction: "Generate an image that replicates the given source image with precise details. The final rendered preview must match the original image exactly.\n\nRequirements & Instructions:\n\n** Background Styles:\n"+ req.body.cssPrompt +"\n\n   - Replicate the body background styling and designs, using CSS only for its design and pattern if available, without using background images.\n - Avoid using background-image css property for images instead use html 'img' tag\n\n** Text and Fonts:\n   - Detect and apply the correct font family, size, color, weight, and style.\n   - Replicate text alignments, line heights, letter spacing, and any text decorations as seen in the image.\n\n** Icons and Images:\n   - Extract and place all icons and images accurately.\n   - Ensure icons are styled using FontAwesome 5 classes (<i> tags) and include the FontAwesome CDN link.\n\n** Layout Structure:\n   - Recreate the layout using appropriate HTML tags (divs, sections, headers, footers, etc.).\n   - Maintain correct spacing, margins, and paddings to match the original design.\n\n** Interactive Elements:\n   - Style buttons and interactive elements with accurate hover and active states.\n   - Must detect borders, shadows, and other styles of elements and texts and replicate corresponding css styling finely.\n\n** Advanced Styling:\n   - Mimic additional styling such as box shadows, border-radius, opacity, and transformations.\n   - Utilize CSS properties like flexbox or grid for layout as needed.\n\n** Responsiveness:\n   - Implement responsive designs to accommodate various screen sizes, if indicated by the image.\n\n** Color Detection and Application:\n   - Detect and apply all colors accurately (background, font, border, etc.) using the respective element's style attribute.\n\n** Unique IDs for Selectors:\n   - Assign unique but relatable \"id\" attributes to each tag and element (excluding <html>, <head>, and children) to facilitate CSS selectors.\n\n** Audio Tags:\n    - Set the \"src\" attribute value of recognized <audio> tags to \"1.mp3\".\n\n** Iframe Elements:\n    - Analyze and hypothesize related content for recognized <iframe> elements.\n    - Attach a relevant internet link to the \"src\" attribute.\n\n** Title Tag:\n    - Suggest an appropriate title for the page based on the image content and store it in the innerText of the <title> tag.\n\n** Image Descriptions:\n    - Describe images inside the given image in very detail, including image style, theme, context, and each element and background and assign it to corresponding \"alt\" attribute. But keep it inside 300 characters\n\n** Detect and recognize various colors in image and use them properly\n\n** Detect and recognize various font styles, font weight and font families and use them properly on that corresponding text\n\n** Detect and keep the alignments and position of elements properly\n\n\n** Output Format:\n    - Provide the output in a code block of HTML with embedded CSS.\n\n** Viewport width:\n    - Must add meta tag for viewport with width to device width and initial scale to 1.\n\n** Remove document type declaration:\n    - Don't include any kind of html document type declaration like '<!DOCTYPE html>'\n\n** No extra explanation:\n    - Don't give me any explanation my instructions.\n\n"+ req.body.jsPrompt +"Output Format:\n\n\\`\\`\\`html\n<html>\n <!-- IMAGE REPLICATED CODE GOES HERE... -->\n</html>\n\\`\\`\\` \n\n If anyone asks about you, don't disclose your identity that you are trained by google. Reply them that you are trained and built by Om.",
+  systemInstruction: systemInstruction[0],
 });
           const chatSession = model.startChat({
     generationConfig,
@@ -263,23 +267,33 @@ app.post(
   });
           try{
             let htmlCode;
-          let result = await chatSession.sendMessage("Heres the image:");
-          let resultText = result.response.text()
+          let result = await chatSession.sendMessage("I gave you the image. now generate->");
+          let resultText = await result.response.text()
           let htmlRegex = /\`\`\`html\s([\s\S]*?)\`\`\`/g
           let matchedHtml = htmlRegex.exec(resultText)
           if(matchedHtml){
             htmlCode = matchedHtml[1].replace(/<!DOCTYPE html(?:\[.*?\])?>/i, '')
           }else{
+            if(reqCount <= 5){
             generateCode(geminiApiKeys[getRandomIntegerExcluding(0, geminiApiIndex[1], geminiApiIndex[0])].trim(), uploadedFilePath, "gemini-1.5-pro")
+            reqCount++
+            }else{
+              throw "No matching HTML found."
+            }
           }
           
           return htmlCode;
           }catch(e){
             if(e.status == 429){
+              if(reqCount <= 5){
               generateCode(geminiApiKeys[getRandomIntegerExcluding(0, geminiApiIndex[1], geminiApiIndex[0])].trim(), uploadedFilePath, "gemini-1.5-pro")
+              reqCount++
+              }else{
+                throw "Requests limit exceed."
+              }
             }else{
               console.log("AI Model Error: ",e)
-              throw new Error("AI Model Error: "+e)
+              throw "AI Model Error: " + e
             }
           }
         }
@@ -288,11 +302,18 @@ app.post(
               const uploadedFilePath = path.join(rootDir + "uploads/image2code/original_images/",
                 uploadedFileName);
               const generatedHtml = await generateCode(geminiApiKeys[geminiApiIndex[0]].trim(), uploadedFilePath, "gemini-1.5-pro")
+              if(generatedHtml){
                 res.json({
                     message: "HTML Generated",
                     status: "success",
                     html: generatedHtml,
                 });
+              }else{
+                res.json({
+                    message: "HTML Generation failed",
+                    status: "error"
+                });
+              }
         } catch (error) {
                 console.log(error)
                 res.json({
