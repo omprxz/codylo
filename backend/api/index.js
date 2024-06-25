@@ -283,7 +283,7 @@ app.post(
             }
           }
         }
-        
+      
         try {
               const uploadedFilePath = path.join(rootDir + "uploads/image2code/original_images/",
                 uploadedFileName);
