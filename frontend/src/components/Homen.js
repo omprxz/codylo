@@ -1,10 +1,15 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FaArrowRightLong } from "react-icons/fa6";
 import { IoChevronDownSharp } from "react-icons/io5";
 import Footer from './Footer.js'
+import Aos from 'aos'
+import 'aos/dist/aos.css'
 
 function Home(){
+  useEffect(()=>{
+    Aos.init()
+  }, [])
   
   const faqs = [
   {
@@ -87,7 +92,7 @@ const [openIndexes, setOpenIndexes] = useState([]);
         </div>
         
         {
-        <div className="hiworks relative flex flex-col items-center rounded-tl-[40px] rounded-tr-[40px] w-full mt-24 overflow-hidden bg-black">
+        <div className="hiworks relative flex flex-col items-center rounded-tl-[40px] rounded-tr-[40px] w-full mt-20 overflow-hidden bg-black" data-aos='fade-up' data-aos-duration='700' data-aos-easing='ease-in-out' data-aos-once={true}>
         {
         <div className='relative w-full flex justify-center'>
           <div className='relative mt-10'>
@@ -104,7 +109,7 @@ const [openIndexes, setOpenIndexes] = useState([]);
         <div className="cards flex flex-col items-center gap-5 mt-8 px-6 pt-6">
         
         {
-          <div className='card border-[0.7px] border-gray-400 rounded-lg w-full px-8 pb-6'>
+          <div className='card border-[0.7px] border-gray-400 rounded-lg w-full px-8 pb-6' data-aos='fade-up' data-aos-duration='700' data-aos-easing='ease-in-out' data-aos-once={true}>
           <div className='flex justify-center relative pb-0 mb-0 h-36'>
             <img className='w-40 absolute -translate-y-[28%]' src="home-circle.webp" />
           </div>
@@ -113,7 +118,7 @@ const [openIndexes, setOpenIndexes] = useState([]);
         </div>
         }
         {
-          <div className='card border-[0.7px] border-gray-400 rounded-lg w-full px-8 pb-6'>
+          <div className='card border-[0.7px] border-gray-400 rounded-lg w-full px-8 pb-6' data-aos='fade-up' data-aos-duration='700' data-aos-easing='ease-in-out' data-aos-once={true}>
           <div className='flex justify-center relative pb-0 mb-0 h-36'>
             <img className='w-40 absolute -translate-y-[28%]' src="home-cone.webp" />
           </div>
@@ -122,7 +127,7 @@ const [openIndexes, setOpenIndexes] = useState([]);
         </div>
         }
         {
-        <div className='card border-[0.7px] border-gray-400 rounded-lg w-full px-8 pb-6'>
+        <div className='card border-[0.7px] border-gray-400 rounded-lg w-full px-8 pb-6' data-aos='fade-up' data-aos-duration='700' data-aos-easing='ease-in-out' data-aos-once={true}>
           <div className='flex justify-center relative pb-0 mb-0 h-36'>
             <img className='w-40 absolute -translate-y-[28%]' src="home-cylin.webp" />
           </div>
@@ -138,7 +143,7 @@ const [openIndexes, setOpenIndexes] = useState([]);
         }
         
         {
-          <div className='wwhere mt-16 w-full px-6'>
+          <div className='wwhere mt-16 w-full px-6' data-aos='fade-up' data-aos-duration='700' data-aos-easing='ease-in-out' data-aos-once={true}>
           <p className='text-gray-500 mb-4'>Why we exist?</p>
           
           <p className='font-bold text-[1.65rem] text-gray-100 inline'>Codylo is here to revolutionize the coding experience with advanced AI-driven tools. </p>
@@ -150,7 +155,7 @@ const [openIndexes, setOpenIndexes] = useState([]);
         }
         
         {
-          <div className="faqs relative mb-10 grid place-items-center mt-24">
+          <div className="faqs relative mb-10 grid place-items-center mt-24" data-aos='fade-up' data-aos-duration='700' data-aos-easing='ease-in-out' data-aos-once={true}>
           {
           <div className='relative'>
           <div className="absolute bg-gradient-to-r from-pink-500 to-purple-500 rounded-full inset-0.5 blur-sm"></div>
