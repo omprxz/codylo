@@ -55,7 +55,7 @@ connectToDatabase();
 
 const geminiApiKeys = process.env.GEMINI_API_KEYS.split(',');
 const geminiApiKey = geminiApiKeys[2].trim()
-const geminiApiIndex = [2, 3]
+const geminiApiIndex = [2, geminiApiKeys.length]
 
 const replicateApiKeys = process.env.REPLICATE_API_TOKENS.split(',')
 const replicateApiKey = replicateApiKeys[0].trim()
@@ -92,7 +92,6 @@ const uploadGemini = multer({
 const saveFeedback = async (name, email, feedback) => {
     try {
         const newFeedback = await Feedback.create({ name, email, feedback });
-        console.log(newFeedback);
         return newFeedback;
     } catch (err) {
         console.error("Error saving feedback:", err);
@@ -212,9 +211,6 @@ app.post(
                     displayName: path.basename(filePath)
                 });
                 const file = uploadResult.file;
-                console.log(
-                    `Uploaded file ${file.displayName} as: ${file.name}`
-                );
                 return file;
             }
           const files = [ await uploadToGemini(uploadedFilePath, mime.lookup(uploadedFilePath)) ];
@@ -228,7 +224,7 @@ app.post(
                 
           const model = genAI.getGenerativeModel({
   model: geminiModel,
-  systemInstruction: "Generate an image that replicates the given source image with precise details. The final rendered preview must match the original image exactly.\n\nRequirements & Instructions:\n\n** Background Styles:\n"+ req.body.cssPrompt +"\n\n   - Replicate the body background styling and designs, using CSS only for its design and pattern if available, without using background images.\n - Avoid using background-image css property for images instead use html 'img' tag\n\n** Text and Fonts:\n   - Detect and apply the correct font family, size, color, weight, and style.\n   - Replicate text alignments, line heights, letter spacing, and any text decorations as seen in the image.\n\n** Icons and Images:\n   - Extract and place all icons and images accurately.\n   - Ensure icons are styled using FontAwesome 5 classes (<i> tags) and include the FontAwesome CDN link.\n\n** Layout Structure:\n   - Recreate the layout using appropriate HTML tags (divs, sections, headers, footers, etc.).\n   - Maintain correct spacing, margins, and paddings to match the original design.\n\n** Interactive Elements:\n   - Style buttons and interactive elements with accurate hover and active states.\n   - Must detect borders, shadows, and other styles of elements and texts and replicate corresponding css styling finely.\n\n** Advanced Styling:\n   - Mimic additional styling such as box shadows, border-radius, opacity, and transformations.\n   - Utilize CSS properties like flexbox or grid for layout as needed.\n\n** Responsiveness:\n   - Implement responsive designs to accommodate various screen sizes, if indicated by the image.\n\n** Color Detection and Application:\n   - Detect and apply all colors accurately (background, font, border, etc.) using the respective element's style attribute.\n\n** Unique IDs for Selectors:\n   - Assign unique but relatable \"id\" attributes to each tag and element (excluding <html>, <head>, and children) to facilitate CSS selectors.\n\n** Audio Tags:\n    - Set the \"src\" attribute value of recognized <audio> tags to \"1.mp3\".\n\n** Iframe Elements:\n    - Analyze and hypothesize related content for recognized <iframe> elements.\n    - Attach a relevant internet link to the \"src\" attribute.\n\n** Title Tag:\n    - Suggest an appropriate title for the page based on the image content and store it in the innerText of the <title> tag.\n\n** Image Descriptions:\n    - Describe images inside the given image in very detail, including style, theme, context, and each element and convert its to a prompt form for ai image creator and assign it to corresponding \"alt\" attribute. But keep it inside 300 characters\n\n** Detect and recognize various colors in image and use them properly\n\n** Detect and recognize various font styles, font weight and font families and use them properly on that corresponding text\n\n** Detect and keep the alignments and position of elements properly\n\n\n** Output Format:\n    - Provide the output in a code block of HTML with embedded CSS.\n\n** Viewport width:\n    - Must add meta tag for viewport with width to device width and initial scale to 1.\n\n** Remove document type declaration:\n    - Don't include any kind of html document type declaration like '<!DOCTYPE html>'\n\n** No extra explanation:\n    - Don't give me any explanation my instructions.\n\n"+ req.body.jsPrompt +"Output Format:\n\n\\`\\`\\`html\n<html>\n <!-- IMAGE REPLICATED CODE GOES HERE... -->\n</html>\n\\`\\`\\`",
+  systemInstruction: "Generate an image that replicates the given source image with precise details. The final rendered preview must match the original image exactly.\n\nRequirements & Instructions:\n\n** Background Styles:\n"+ req.body.cssPrompt +"\n\n   - Replicate the body background styling and designs, using CSS only for its design and pattern if available, without using background images.\n - Avoid using background-image css property for images instead use html 'img' tag\n\n** Text and Fonts:\n   - Detect and apply the correct font family, size, color, weight, and style.\n   - Replicate text alignments, line heights, letter spacing, and any text decorations as seen in the image.\n\n** Icons and Images:\n   - Extract and place all icons and images accurately.\n   - Ensure icons are styled using FontAwesome 5 classes (<i> tags) and include the FontAwesome CDN link.\n\n** Layout Structure:\n   - Recreate the layout using appropriate HTML tags (divs, sections, headers, footers, etc.).\n   - Maintain correct spacing, margins, and paddings to match the original design.\n\n** Interactive Elements:\n   - Style buttons and interactive elements with accurate hover and active states.\n   - Must detect borders, shadows, and other styles of elements and texts and replicate corresponding css styling finely.\n\n** Advanced Styling:\n   - Mimic additional styling such as box shadows, border-radius, opacity, and transformations.\n   - Utilize CSS properties like flexbox or grid for layout as needed.\n\n** Responsiveness:\n   - Implement responsive designs to accommodate various screen sizes, if indicated by the image.\n\n** Color Detection and Application:\n   - Detect and apply all colors accurately (background, font, border, etc.) using the respective element's style attribute.\n\n** Unique IDs for Selectors:\n   - Assign unique but relatable \"id\" attributes to each tag and element (excluding <html>, <head>, and children) to facilitate CSS selectors.\n\n** Audio Tags:\n    - Set the \"src\" attribute value of recognized <audio> tags to \"1.mp3\".\n\n** Iframe Elements:\n    - Analyze and hypothesize related content for recognized <iframe> elements.\n    - Attach a relevant internet link to the \"src\" attribute.\n\n** Title Tag:\n    - Suggest an appropriate title for the page based on the image content and store it in the innerText of the <title> tag.\n\n** Image Descriptions:\n    - Describe images inside the given image in very detail, including image style, theme, context, and each element and background and assign it to corresponding \"alt\" attribute. But keep it inside 300 characters\n\n** Detect and recognize various colors in image and use them properly\n\n** Detect and recognize various font styles, font weight and font families and use them properly on that corresponding text\n\n** Detect and keep the alignments and position of elements properly\n\n\n** Output Format:\n    - Provide the output in a code block of HTML with embedded CSS.\n\n** Viewport width:\n    - Must add meta tag for viewport with width to device width and initial scale to 1.\n\n** Remove document type declaration:\n    - Don't include any kind of html document type declaration like '<!DOCTYPE html>'\n\n** No extra explanation:\n    - Don't give me any explanation my instructions.\n\n"+ req.body.jsPrompt +"Output Format:\n\n\\`\\`\\`html\n<html>\n <!-- IMAGE REPLICATED CODE GOES HERE... -->\n</html>\n\\`\\`\\` \n\n If anyone asks about you, don't disclose your identity that you are trained by google. Reply them that you are trained and built by Om.",
 });
           const chatSession = model.startChat({
     generationConfig,
@@ -273,13 +269,13 @@ app.post(
           if(matchedHtml){
             htmlCode = matchedHtml[1].replace(/<!DOCTYPE html(?:\[.*?\])?>/i, '')
           }else{
-            generateCode(geminiApiKeys[geminiApiIndex[0]], uploadedFilePath, "gemini-1.5-pro")
+            generateCode(geminiApiKeys[geminiApiIndex[0]].trim(), uploadedFilePath, "gemini-1.5-pro")
           }
           
           return htmlCode;
           }catch(e){
             if(e.status == 429){
-              generateCode(geminiApiKeys[getRandomIntegerExcluding(0, geminiApiIndex[1], geminiApiIndex[0])], uploadedFilePath, "gemini-1.5-pro")
+              generateCode(geminiApiKeys[getRandomIntegerExcluding(0, geminiApiIndex[1], geminiApiIndex[0])].trim(), uploadedFilePath, "gemini-1.5-pro")
             }else{
               throw "AI Model Error"
             }
@@ -289,8 +285,7 @@ app.post(
         try {
               const uploadedFilePath = path.join(rootDir + "uploads/image2code/original_images/",
                 uploadedFileName);
-              const generatedHtml = await generateCode(geminiApiKeys[geminiApiIndex[0]], uploadedFilePath, "gemini-1.5-pro")
-              console.log(generatedHtml)
+              const generatedHtml = await generateCode(geminiApiKeys[geminiApiIndex[0]].trim(), uploadedFilePath, "gemini-1.5-pro")
                 res.json({
                     message: "HTML Generated",
                     status: "success",

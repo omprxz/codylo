@@ -30,19 +30,17 @@ function Nav() {
 
   return (
     <>
-      <div className="flex justify-between items-center bg-transparent px-3 py-3 sticky top-0 z-10">
-        <Link to='/'>
-          <FiHome className="text-white p-1 text-3xl hover:ring-4 hover:ring-gray-700 rounded" />
+      <div className="flex justify-between items-center bg-transparent px-5 py-3 sticky top-0 z-10">
+        <Link className="text-white text-2xl" to='/'>
+          <FiHome />
         </Link>
-        <Link to='/'>
-          <img src="/logo.png" className="aspect-auto w-12" alt="" />
+        <Link to='/' className='font-extrabold text-green-400 text-3xl'>
+          Codylo
         </Link>
         <div ref={dropdownRef}>
-          <Link onClick={toggleDropdown}>
-            <FiMoreVertical className="text-white text-3xl p-1 hover:ring-4 hover:ring-gray-700 rounded" />
-          </Link>
+          <FiMoreVertical className="text-white text-2xl" onClick={toggleDropdown} />
           {isOpen && (
-            <div className="absolute top-[101%] right-3 bg-black text-gray-100 shadow-md rounded text-sm p-2">
+            <div className="absolute top-[101%] right-3 bg-neutral-900 text-gray-100 shadow-md rounded text-sm p-2">
               <div className="cursor-pointer hover:bg-gray-700 p-2 rounded">
                 <Link to="/about">About</Link>
               </div>

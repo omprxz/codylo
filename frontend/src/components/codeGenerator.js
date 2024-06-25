@@ -14,7 +14,7 @@ import 'animate.css';
 import { generateCodePrompt } from './prompts';
 import Gemini from './gemini';
 import Mic from './mic';
-import { MdMicNone } from "react-icons/md";
+import Footer from './Footer';
 import './codeGenerator.css';
 
 function GenerateCode() {
@@ -221,9 +221,11 @@ function GenerateCode() {
 
   return(
     <>
-    <div className='flex flex-col align-middle p-2 gap-4 pb-20'>
-    <h1 className="font-bold my-3 text-2xl text-green-300 text-center">AI Code Generator</h1>
-    <select id="language" className="form-select block w-full px-4 py-2 mt-1 rounded-md bg-gray-800 text-white border-none focus:outline-none focus:bg-gray-800" value={language} onChange={handleLanguage}>
+    <div className="relative codeDiv min-h-screen">
+      <div className="absolute bg-gradient-to-r from-pink-500 to-purple-500 inset-0 blur-lg opacity-10 min-h-screen"></div>
+    <div className='relative flex flex-col align-middle p-2 px-4 gap-4 pb-28'>
+    <h1 className="font-black my-4 mt-5 text-3xl text-gray-100 text-center font-mono">AI Code Generator</h1>
+    <select id="language" className="form-select block w-full px-4 py-2.5 mt-1 rounded-md bg-gray-800 text-white border-none focus:outline-none focus:bg-gray-800" value={language} onChange={handleLanguage}>
       <option value="" disabled>Select languages</option>
     <option value="JavaScript">JavaScript</option>
     <option value="Python">Python</option>
@@ -259,7 +261,7 @@ function GenerateCode() {
     <option value="Lua">Lua</option>
     <option value="Solidity">Solidity</option>
   </select>
-    <select className="form-select block w-full px-4 py-2 mt-1 rounded-md bg-gray-800 text-white border-none focus:outline-none focus:bg-gray-800" value={comments_preference} onChange={handleCPref}>
+    <select className="form-select block w-full px-4 py-2.5 mt-1 rounded-md bg-gray-800 text-white border-none focus:outline-none focus:bg-gray-800" value={comments_preference} onChange={handleCPref}>
       <option value="without comments">Without Comments</option>
       <option value="with comments">With Comments</option>
     </select>
@@ -268,20 +270,23 @@ function GenerateCode() {
 
         <Mic className={`absolute bg-red-600 bottom-1.5 right-1.5 z-10 text-center`} iconClassName={`text-white text-[1.35rem] text-red-600`} setAlertMsg={setAlertMsg} setText={setUser_prompt} />
 
-        <textarea id="user_prompt" rows="5" placeholder="Describe what you want" className={`form-textarea block w-full px-4 pe-10 py-2 mt-1 rounded-md bg-gray-800 text-white focus:outline-none focus:bg-gray-800 min-h-[120px] ${alertMsg == 'Prompt is empty.' ? 'border-red-600 bg-red-200 ring-2 ring-red-300 placeholder:text-gray-700 focus:placeholder:text-gray-500 animate__animated animate__headShake': 'border-none'}`} value={user_prompt} onChange={handleUserPrompt}></textarea>
+        <textarea id="user_prompt" rows="6" placeholder="Describe what you want" className={`form-textarea block w-full px-4 pe-10 py-2 mt-1 rounded-md bg-gray-800 text-white focus:outline-none focus:bg-gray-800 min-h-[120px] ${alertMsg == 'Prompt is empty.' ? 'border-red-600 bg-red-200 ring-2 ring-red-300 placeholder:text-gray-700 focus:placeholder:text-gray-500 animate__animated animate__headShake': 'border-none'}`} value={user_prompt} onChange={handleUserPrompt}></textarea>
       </div>
       <p className="text-red-600 ms-1 mt-2 text-center">
         {alertMsg}
       </p>
     </div>
     <div className="text-center">
-      <button className="border w-2/5 focus:ring-4 hover:ring-4 focus:outline-none font-medium rounded-md px-3 py-2.5 text-center mb-2 border-green-400 text-green-400 hover:ring-green-900 focus:ring-green-900" disabled={generating} onClick={generateCode}> { generating ? 'Generating...': 'Generate Code' }</button>
+      <button className="border w-2/5 focus:ring-4 hover:ring-4 focus:outline-none font-medium rounded-md px-3 py-2.5 text-center mb-2 border-blue-500 text-blue-500 hover:ring-blue-900 focus:ring-blue-800 mt-3" disabled={generating} onClick={generateCode}> { generating ? 'Generating...': 'Generate Code' }</button>
     </div>
     { resultsVisib && (<div className="results">
       <Code_Block initialCode={code} fileName={filename} language={syntaxLanguage} hasError={errorCode} showFileName={true} />
       </div>
     )
       }
+    </div>
+    
+    <Footer />
     </div>
     </>
   );

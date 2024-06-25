@@ -11,6 +11,7 @@ import {
 import "./image2code.css";
 import TicTacToe from "./fun/tictactoe";
 import Mic from "./mic";
+import Footer from './Footer';
 import { MdMicNone } from "react-icons/md";
 
 const Image2Code = () => {
@@ -212,35 +213,6 @@ const Image2Code = () => {
 
   async function convertHtml2Json(html) {
     let withoutDocDec = html.replace(/<!DOCTYPE html(?:\[.*?\])?>/i, "");
-    /*
-  const generateJson = (element) => {
-    const obj = {
-      tag: element.tagName.toLowerCase(),
-      attributes: {}
-    };
-
-    for (let attr of element.attributes) {
-      obj.attributes[attr.name] = attr.value;
-    }
-
-    if (element.childNodes.length === 0) {
-      if (element.textContent && element.textContent.trim()) {
-        obj.innerText = element.textContent.trim();
-      }
-    } else {
-      obj.children = Array.from(element.children).map(generateJson);
-    }
-
-    return obj;
-  };
-
-  const htmlToJSON = (htmlData) => {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(htmlData, 'text/html');
-    return generateJson(doc.documentElement);
-  };
-  return htmlToJSON(withoutDocDec);
-  */
     try {
       let jsonFromHtml = await axios.post(api_baseurl + "/api/html2json", {
         html: withoutDocDec,
@@ -386,15 +358,16 @@ const Image2Code = () => {
       setalertMsg("Something went wrong: ", e);
     }
     setisProcessing(false);
-    setprocessText("");
   };
 
   return (
     <>
-      <div className="flex flex-col items-center p-2 px-3 gap-3 pb-20">
+      <div className="relative codeDiv min-h-screen">
+      <div className="absolute bg-gradient-to-r from-pink-500 to-purple-500 inset-0 blur-lg opacity-10 min-h-screen"></div>
+      <div className="relative flex flex-col items-center p-2 px-4 gap-3 pb-28">
         {
-          <h1 className="font-bold my-3 text-2xl text-green-300 text-center">
-            AI Image To Code
+          <h1 className="font-black my-4 mt-5 text-[1.75rem] text-gray-100 text-center font-mono">
+            Convert Image To Code
           </h1>
         }
         {
@@ -470,7 +443,7 @@ const Image2Code = () => {
         }
         {
           <div className="w-full">
-            <label className="inline-flex items-center cursor-pointer mt-1 mb-1">
+            <label className="inline-flex items-center cursor-pointer mt-5 mb-1">
               <span className="ms-1 me-3 text-sm font-medium text-white">
                 Add Javascript Functionality?
               </span>
@@ -481,7 +454,7 @@ const Image2Code = () => {
                 checked={usingFunc}
                 onChange={handleFuncToggle}
               />
-              <div className="relative w-11 h-6 bg-gray-700 rounded-full peer peer-focus:ring-4 peer-focus:ring-emerald-900 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all border-gray-600 peer-checked:bg-green-500"></div>
+              <div className="relative w-11 h-6 bg-gray-700 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-900 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all border-gray-600 peer-checked:bg-blue-500"></div>
             </label>
             {usingFunc && (
               <div className="relative">
@@ -495,7 +468,7 @@ const Image2Code = () => {
                 <textarea
                   rows="5"
                   placeholder="Describe your script functionality"
-                  className={`form-textarea block w-full px-4 pe-10 py-2 mt-2 rounded-md bg-gray-800 text-white focus:outline-none focus:bg-gray-800 min-h-[120px] border-none`}
+                  className={`form-textarea block w-full px-4 pe-11 py-2 my-4 rounded-md bg-gray-800 text-white focus:outline-none focus:bg-gray-800 min-h-[120px] border-none`}
                   value={promptFunc}
                   onChange={handleFuncPrompt}
                 ></textarea>
@@ -512,7 +485,7 @@ const Image2Code = () => {
               Wanted to add any CSS frameworks?
             </label>
             <select
-              className="form-select block w-full px-4 py-2 mt-1 rounded-md bg-gray-800 text-white border-none focus:outline-none focus:bg-gray-800"
+              className="form-select block w-full px-4 py-2.5 mt-1 rounded-md bg-gray-800 text-white border-none focus:outline-none focus:bg-gray-800"
               disabled={isProcessing}
               id="framework"
               value={cssFw}
@@ -528,7 +501,7 @@ const Image2Code = () => {
         }
         {
           <div className="w-full text-left">
-            <label className="inline-flex items-center cursor-pointer mt-1 mb-1">
+            <label className="inline-flex items-center cursor-pointer mt-4 mb-1">
               <span className="ms-1 me-3 text-sm font-medium text-white">
                 Use jQuery?
               </span>
@@ -540,17 +513,17 @@ const Image2Code = () => {
                 onChange={handleUsingJquery}
                 className="sr-only peer"
               />
-              <div className="relative w-11 h-6 bg-gray-700 rounded-full peer peer-focus:ring-4 peer-focus:ring-emerald-900 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all border-gray-600 peer-checked:bg-green-500"></div>
+              <div className="relative w-11 h-6 bg-gray-700 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-900 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all border-gray-600 peer-checked:bg-blue-500"></div>
             </label>
           </div>
         }
         {
           <div className="w-full text-center">
             {alertMsg && (
-              <p class="text-center text text-red-600">{alertMsg}</p>
+              <p className="text-center text text-red-600">{alertMsg}</p>
             )}
             <button
-              className="mt-4 border max-h-full focus:ring-4 w-2/5 hover:ring-4 focus:outline-none font-medium rounded-md px-3 py-2.5 text-center mb-2 border-green-400 text-green-400 hover:ring-green-900 focus:ring-green-900 disabled:ring-0"
+              className="mt-5 border max-h-full focus:ring-4 w-2/5 hover:ring-4 focus:outline-none font-medium rounded-md px-3 py-2.5 text-center mb-2 border-blue-400 text-blue-400 hover:ring-blue-900 focus:ring-blue-800 disabled:ring-0"
               disabled={isProcessing}
               onClick={handleSubmit}
             >
@@ -577,15 +550,13 @@ const Image2Code = () => {
             {" "}
             <div className="fixed min-h-screen min-w-full bg-black opacity-90 top-0 z-30 text-center text-white touch-none"></div>
             <div className="fixed translate-x-[-50%] left-[50%] top-5 z-30">
-              <TicTacToe />
               <p className="text-white text-sm font-medium text-center whitespace-nowrap overflow-x-hidden mt-2">
-                It may take some time, till then enjoy playing Tic-Tac-Toe{" "}
-                <FaRegSmileWink className="inline-block mx-1" />
+                Please wait, it may take some time...
               </p>
             </div>
-            <div className="fixed text-white translate-x-[-50%] bottom-5 left-[50%] z-30 w-full px-3">
+            <div className="fixed text-white -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 z-30 w-full px-3">
               <div className="flex flex-col justify-center items-center gap-1.5 text-center min-w-full">
-                <div className="mb-5 h-4 overflow-hidden rounded-full min-w-full bg-gray-200">
+                <div className="mb-1 h-4 overflow-hidden rounded-full min-w-full bg-gray-200">
                   <div
                     className="h-4 animate-pulse rounded-full bg-gradient-to-r from-green-500 to-blue-500 text-sm flex justify-center items-center transition transition-all duration-1000"
                     style={{ width: processStatus + "%" }}
@@ -599,6 +570,8 @@ const Image2Code = () => {
             </div>
           </>
         )}
+      </div>
+      <Footer />
       </div>
     </>
   );

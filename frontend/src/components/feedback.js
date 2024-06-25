@@ -3,10 +3,9 @@ import {useState} from 'react';
 import axios from 'axios';
 import './feedback.css';
 
-export default function FeedBack(){
+export default function FeedBack({ setIsFormOpen, isFormOpen, toggleNav }){
   const api_baseurl = window.location.hostname === "localhost" ? process.env.REACT_APP_API_BASEURL_LOCAL : process.env.REACT_APP_API_BASEURL_PRODUCTION;
   
-  const [isFormOpen, setIsFormOpen] = useState(false)
   const [fbName, setFbName] = useState('')
   const [fbEmail, setFbEmail] = useState('')
   const [fbText, setFbText] = useState('')
@@ -16,6 +15,7 @@ export default function FeedBack(){
   
   const handleFeedbackToggle = () => {
     setIsFormOpen(!isFormOpen)
+    toggleNav()
   }
   const handleFbValueChange = (e) => {
   const { id, value } = e.target;
@@ -65,7 +65,7 @@ export default function FeedBack(){
         'Content-Type': 'application/json'
       }
     });
-    if(response.data.status == 'success'){
+    if(response.data.status === 'success'){
       setFbName('')
       setFbEmail('')
       setFbText('')
@@ -73,6 +73,8 @@ export default function FeedBack(){
       setSucMsg("Feedback sent to om. Thanks")
       setTimeout(function() {
         setIsFormOpen(false)
+        setSucMsg('')
+        setErrMsg('')
       }, 2000);
     }else{
       throw "Error in sending email to om."
@@ -85,15 +87,12 @@ export default function FeedBack(){
   }
   return(
     <>
-      <div>
-        <span className={`text-white bg-gray-600 px-3 py-1 rounded z-30 fixed right-6 bottom-6 inline-block transition ease-in-out duration-300 ${ isFormOpen ? 'opacity-0 pointer-events-none' : '' }`} onClick={handleFeedbackToggle}><FaCommentAlt className='inline-block' /> Feedback</span>
-      </div>
-      <div className={`fixed mt-[-5rem] z-20 flex justify-center items-center min-h-screen min-w-full transition ease-in-out duration-300 ${ isFormOpen ? '' : 'opacity-0 pointer-events-none' }`}> 
-        <div className='feedbackForm w-80 shadow-md shadow-slate-800 rounded-lg flex flex-col items-center px-7 pt-5 pb-7 gap-3'>
+      <div className={`fixed mt-[-5rem] z-20 touch-none flex justify-center items-center min-h-screen min-w-full transition ease-in-out duration-200 ${ isFormOpen ? '' : 'opacity-0 pointer-events-none' }`}> 
+        <div className='feedbackForm bg-gradient-to-b from-[#3a1c35] via-[#221b3a] to-black w-80 shadow shadow-gray-900 rounded-lg flex flex-col items-center px-7 pt-5 pb-7 gap-3'>
           <h1 className='text-center font-bold text-white text-2xl'>Give Feedback</h1>
-            <input type="text" id="name" class="border text-sm rounded block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" placeholder="Name" value={fbName} onChange={handleFbValueChange} required />
-            <input type="email" id="email" class="border text-sm rounded block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" placeholder="Email" value={fbEmail} onChange={handleFbValueChange} required />
-            <textarea type="msgText" id="msgText" class="border text-sm rounded block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" placeholder="Suggestion" rows="5" value={fbText} onChange={handleFbValueChange} required></textarea>
+            <input type="text" id="name" class="border-none text-sm rounded block w-full px-3 py-2.5 bg-black placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" placeholder="Name" value={fbName} onChange={handleFbValueChange} required />
+            <input type="email" id="email" class="border-none text-sm rounded block w-full px-3 py-2.5 bg-black placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" placeholder="Email" value={fbEmail} onChange={handleFbValueChange} required />
+            <textarea type="msgText" id="msgText" class="border-none text-sm rounded block w-full px-3 py-2.5 bg-black placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500 min-h-[6.5rem]" placeholder="Suggestion" rows="5" value={fbText} onChange={handleFbValueChange} required></textarea>
             { errMsg && (<p className='text-red-600 text-sm'>{ errMsg }</p>) }
             { sucMsg && (<p className='text-green-500 text-sm'>{ sucMsg }</p>) }
             <button type='submit' className="border text-sm focus:ring-4 hover:ring-4 focus:outline-none font-medium rounded-sm px-4 py-2 text-center mb-2 mt-4 border-blue-400 text-blue-400 hover:ring-blue-900 focus:ring-blue-900" disabled={fbSending} onClick={sendFeedback}> { fbSending ? 'Please wait...': 'Send Feedback' }</button>

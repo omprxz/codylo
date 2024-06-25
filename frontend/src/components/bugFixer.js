@@ -24,6 +24,8 @@ import {
   FaClipboardCheck
 } from "react-icons/fa6";
 import Gemini from './gemini.js';
+import Mic from './mic.js';
+import Footer from './Footer';
 
 function FixBug() {
 
@@ -185,13 +187,16 @@ function FixBug() {
       }
     }
   }
+  
   return(
     <>
-      <div className='flex flex-col align-middle p-2 gap-3 pb-20'>
-        <h1 className="font-bold mt-3 mb-2 text-2xl text-green-300 text-center">Fix Error/Bug in a Code</h1>
+    <div className="relative codeDiv min-h-screen">
+      <div className="absolute bg-gradient-to-r from-pink-500 to-purple-500 inset-0 blur-lg opacity-10 min-h-screen"></div>
+      <div className='relative flex flex-col align-middle p-2 px-4 gap-4 pb-28'>
+        <h1 className="font-black my-4 mt-5 text-3xl text-gray-100 text-center font-mono">Fix Bug in a Code</h1>
         <div>
           <span className="text-white">Select languages:</span>
-          <select id="language" className="form-multiselect block w-full px-4 py-2 mt-1 rounded-md bg-gray-800 text-white border-none focus:outline-none focus:bg-gray-800" multiple value={language} onChange={handleLanguage}>
+          <select id="language" className="form-multiselect block w-full px-4 py-2.5 mt-1 rounded-md bg-gray-800 text-white border-none focus:outline-none focus:bg-gray-800" multiple value={language} onChange={handleLanguage}>
             <option value="" disabled>Select languages</option>
             <option value="JavaScript">JavaScript</option>
             <option value="Python">Python</option>
@@ -246,16 +251,20 @@ function FixBug() {
                 fontSize: '14px',
                 lineHeight: '1.5em'
               }}
-              className={`editor rounded border-none outline-none w-full min-h-[12rem] ${alertMsg != '' ? 'animate__animated animate__headShake': ''}`}
+              className={`editor rounded border border-gray-400 outline-none w-full min-h-[14rem]
+              `}
               />
           </div>
-          <p className="text-red-600 ms-1 mt-1">
+        </div>
+        <div className='relative'>
+          <Mic className={`absolute bg-red-600 bottom-1.5 right-1.5 z-10 text-center`} iconClassName={`text-white text-[1.35rem] text-red-600`} setAlertMsg={setAlertMsg} setText={setCodeIssue} />
+          <textarea id="codeIssue" rows="6" placeholder="Describe the issues (Leave empty to fix whole code)..." className={`form-textarea block w-full px-4 py-2 pe-10 rounded-md bg-gray-800 text-white focus:outline-none focus:bg-gray-800 border-none`} value={codeIssue} onChange={handleCodeIssue}></textarea>
+        </div>
+        <div className="text-center mt-2">
+          <p className="text-red-600 text-center mb-4">
             {alertMsg}
           </p>
-        </div>
-        <textarea id="codeIssue" rows="3" placeholder="Describe the issues (Leave empty to fix whole code)..." className={`form-textarea block w-full px-4 py-2 rounded-md bg-gray-800 text-white focus:outline-none focus:bg-gray-800 border-none`} value={codeIssue} onChange={handleCodeIssue}></textarea>
-        <div className="text-center mt-2">
-          <button className="border w-2/5 focus:ring-4 hover:ring-4 focus:outline-none font-medium rounded-md px-3 py-2.5 text-center mb-2 border-green-400 text-green-400 hover:ring-green-900 focus:ring-green-900" disabled={fixing} onClick={fixCode}> { fixing ? 'Fixing...': 'Fix Code' }</button>
+          <button className="border w-2/5 focus:ring-4 hover:ring-4 focus:outline-none font-medium rounded-md px-3 py-2.5 text-center mb-2 border-blue-400 text-blue-400 hover:ring-blue-900 focus:ring-blue-800" disabled={fixing} onClick={fixCode}> { fixing ? 'Fixing...': 'Fix Code' }</button>
         </div>
 
         { resultsVisib && (<div className="results">
@@ -276,6 +285,8 @@ function FixBug() {
     )
     }
 
+  </div>
+  <Footer />
   </div>
 </>
 );
