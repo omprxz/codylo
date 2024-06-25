@@ -34,8 +34,9 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
+const NODE_ENV = process.env.NODE_ENV;
 let MONGO_URI;
-if(process.env.NODE_ENV == 'production'){
+if(NODE_ENV == 'production'){
   MONGO_URI = process.env.MONGODB_URI
 }else{
   MONGO_URI = process.env.MONGO_URI_LOCAL
@@ -60,7 +61,7 @@ const geminiApiIndex = [2, geminiApiKeys.length]
 const replicateApiKeys = process.env.REPLICATE_API_TOKENS.split(',')
 const replicateApiKey = replicateApiKeys[0].trim()
 
-let rootDir = "/tmp";
+let rootDir = "/tmp/";
 if(process.env.NODE_ENV != 'production'){
   rootDir = './'
 }

@@ -371,11 +371,11 @@ const Image2Code = () => {
           </h1>
         }
         {
-          <div className="w-full mx-auto bg-gray-800 rounded-lg shadow-md overflow-hidden items-center">
-            <div className="px-4 py-6">
+          <div className="w-full mx-auto bg-transparent rounded-lg shadow-md overflow-hidden items-center">
+            <div className="px-4 pt-6">
               <div
                 id="image-preview"
-                className={`max-w-sm p-6 mb-4 bg-gray-900 border-dashed border-2 border-gray-500 rounded-lg items-center mx-auto text-center cursor-pointer ${
+                className={`max-w-sm p-6 mb-4 bg-transparent border-dashed border-2 border-gray-500 rounded-lg items-center mx-auto text-center cursor-pointer ${
                   imagePreviewUrl
                     ? ""
                     : "border-dashed border-2 border-gray-400"
@@ -443,41 +443,6 @@ const Image2Code = () => {
         }
         {
           <div className="w-full">
-            <label className="inline-flex items-center cursor-pointer mt-5 mb-1">
-              <span className="ms-1 me-3 text-sm font-medium text-white">
-                Add Javascript Functionality?
-              </span>
-              <input
-                type="checkbox"
-                className="sr-only peer"
-                disabled={isProcessing}
-                checked={usingFunc}
-                onChange={handleFuncToggle}
-              />
-              <div className="relative w-11 h-6 bg-gray-700 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-900 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all border-gray-600 peer-checked:bg-blue-500"></div>
-            </label>
-            {usingFunc && (
-              <div className="relative">
-                <Mic
-                  className={`absolute bottom-1.5 right-1.5 z-10 text-center`}
-                  iconClassName={`text-white text-[1.35rem]`}
-                  setAlertMsg={setalertMsg}
-                  setText={setpromptFunc}
-                />
-
-                <textarea
-                  rows="5"
-                  placeholder="Describe your script functionality"
-                  className={`form-textarea block w-full px-4 pe-11 py-2 my-4 rounded-md bg-gray-800 text-white focus:outline-none focus:bg-gray-800 min-h-[120px] border-none`}
-                  value={promptFunc}
-                  onChange={handleFuncPrompt}
-                ></textarea>
-              </div>
-            )}
-          </div>
-        }
-        {
-          <div className="w-full">
             <label
               htmlFor="#framework"
               className="ms-1 me-3 text-sm font-medium text-gray-400 cursor-pointer"
@@ -485,7 +450,7 @@ const Image2Code = () => {
               Wanted to add any CSS frameworks?
             </label>
             <select
-              className="form-select block w-full px-4 py-2.5 mt-1 rounded-md bg-gray-800 text-white border-none focus:outline-none focus:bg-gray-800"
+              className="form-select block w-full px-4 py-2.5 mt-1 rounded-md bg-transparent text-white border border-gray-700 focus:outline-0 outline-0"
               disabled={isProcessing}
               id="framework"
               value={cssFw}
@@ -500,8 +465,43 @@ const Image2Code = () => {
           </div>
         }
         {
+          <div className="w-full">
+            <label className="inline-flex items-center cursor-pointer mt-1 mb-1">
+              <span className="ms-1 me-3 text-sm font-medium text-white">
+                Add Javascript Functionality?
+              </span>
+              <input
+                type="checkbox"
+                className="sr-only peer"
+                disabled={isProcessing}
+                checked={usingFunc}
+                onChange={handleFuncToggle}
+              />
+              <div className="relative w-11 h-6 bg-transparent rounded-full border border-gray-700 peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[1.5px] after:start-[1.5px] after:bg-white peer-checked:after:bg-blue-600 after:border after:border-white peer-checked:border-blue-600 peer-checked:bg-transparent after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+            </label>
+            {usingFunc && (
+              <div className="relative">
+                <Mic
+                  className={`absolute bottom-1.5 right-1.5 z-10 text-center`}
+                  iconClassName={`text-white text-[1.35rem]`}
+                  setAlertMsg={setalertMsg}
+                  setText={setpromptFunc}
+                />
+
+                <textarea
+                  rows="5"
+                  placeholder="Describe your script functionality"
+                  className={`form-textarea block w-full px-4 pe-11 py-2 mt-3 mb-2 rounded-md bg-transparent text-white focus:outline-0 outline-0 min-h-[120px] border border-gray-700`}
+                  value={promptFunc}
+                  onChange={handleFuncPrompt}
+                ></textarea>
+              </div>
+            )}
+          </div>
+        }
+        {
           <div className="w-full text-left">
-            <label className="inline-flex items-center cursor-pointer mt-4 mb-1">
+            <label className="inline-flex items-center cursor-pointer mt-1 mb-1">
               <span className="ms-1 me-3 text-sm font-medium text-white">
                 Use jQuery?
               </span>
@@ -513,7 +513,7 @@ const Image2Code = () => {
                 onChange={handleUsingJquery}
                 className="sr-only peer"
               />
-              <div className="relative w-11 h-6 bg-gray-700 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-900 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all border-gray-600 peer-checked:bg-blue-500"></div>
+              <div className="relative w-11 h-6 bg-transparent rounded-full border border-gray-700 peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[1.5px] after:start-[1.5px] after:bg-white peer-checked:after:bg-blue-600 after:border after:border-white peer-checked:border-blue-600 peer-checked:bg-transparent after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
             </label>
           </div>
         }

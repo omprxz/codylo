@@ -196,7 +196,7 @@ function FixBug() {
         <h1 className="font-black my-4 mt-5 text-3xl text-gray-100 text-center font-mono">Fix Bug in a Code</h1>
         <div>
           <span className="text-white">Select languages:</span>
-          <select id="language" className="form-multiselect block w-full px-4 py-2.5 mt-1 rounded-md bg-gray-800 text-white border-none focus:outline-none focus:bg-gray-800" multiple value={language} onChange={handleLanguage}>
+          <select id="language" className="form-multiselect block w-full px-4 py-2.5 mt-1 rounded-md bg-transparent text-white border border-gray-700 focus:outline-0 outline-0" multiple value={language} onChange={handleLanguage}>
             <option value="" disabled>Select languages</option>
             <option value="JavaScript">JavaScript</option>
             <option value="Python">Python</option>
@@ -245,20 +245,19 @@ function FixBug() {
               padding={10}
               placeholder={`Paste Your${language[0] != undefined ? ' '+language[0] : ''} Code Here...`}
               style={ {
-                backgroundColor: tomorrowNightBright.backgroundColor,
                 color: '#f8f8f2',
                 fontFamily: '"Fira Code", "Fira Mono", monospace',
                 fontSize: '14px',
                 lineHeight: '1.5em'
               }}
-              className={`editor rounded border border-gray-400 outline-none w-full min-h-[14rem]
+              className={`editor rounded border border-gray-700 bg-transparent outline-0 focus:outline-0 w-full min-h-[14rem]
               `}
               />
           </div>
         </div>
         <div className='relative'>
           <Mic className={`absolute bg-red-600 bottom-1.5 right-1.5 z-10 text-center`} iconClassName={`text-white text-[1.35rem] text-red-600`} setAlertMsg={setAlertMsg} setText={setCodeIssue} />
-          <textarea id="codeIssue" rows="6" placeholder="Describe the issues (Leave empty to fix whole code)..." className={`form-textarea block w-full px-4 py-2 pe-10 rounded-md bg-gray-800 text-white focus:outline-none focus:bg-gray-800 border-none`} value={codeIssue} onChange={handleCodeIssue}></textarea>
+          <textarea id="codeIssue" rows="6" placeholder="Describe the issues (Leave empty to fix whole code)..." className={`form-textarea block w-full px-4 py-2 pe-10 rounded-md bg-transparent border border-gray-700 focus:outline-0 text-white outline-0`} value={codeIssue} onChange={handleCodeIssue}></textarea>
         </div>
         <div className="text-center mt-2">
           <p className="text-red-600 text-center mb-4">
