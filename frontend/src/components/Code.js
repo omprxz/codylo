@@ -43,7 +43,7 @@ function Code(){
         <p className="text-center my-6 text-gray-400 px-6 mb-12">Codylo writes code for you, finds and fixes mistakes instantly & much more. Make coding fast and easy. </p>
         {  <div className="grid grid-cols-1 md:grid-cols-2 gap-10 px-6 place-items-center w-full mb-10">
         { tools.map((tool, index) => (
-          <div key={index} className="rounded-2xl border border-gray-400 bg-transparent px-6 py-8 w-full shadow-md shadow-gray-700" data-aos={`${index % 2 == 0 ? 'fade-right' : 'fade-left'}`} data-aos-duration='700' data-aos-easing='ease-in-out' data-aos-once={true}>
+          <div key={index} className="rounded-2xl border border-gray-400 bg-transparent px-6 py-8 w-full shadow-md shadow-gray-700" data-aos={`${index % 2 == 0 ? 'fade-right' : 'fade-left'}`} data-aos-duration='700' data-aos-easing='ease-in-out' >
             <div className="flex justify-between">
               <tool.icon className="text-gray-400 text-6xl" />
               <span className="text-gray-400 text-2xl font-mono font-light">{tool.sno}</span>
