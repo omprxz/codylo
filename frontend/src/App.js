@@ -4,11 +4,9 @@ import FixBug from './components/bugFixer';
 import React, {useEffect, useRef, useState} from 'react';
 import TopLoader from './components/TopLoader.js'
 import { Link, BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
-// import Nav from './components/nav';
-// import Home from './components/home';
-import Nav from './components/Navn';
+import Nav from './components/Nav';
 import ScrollToTop from './components/ScrollToTop';
-import Home from './components/Homen';
+import Home from './components/Home';
 import Code from './components/Code';
 import About from './components/pages/about';
 import FeedBack from './components/feedback';
