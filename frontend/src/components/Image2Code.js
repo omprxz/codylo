@@ -17,10 +17,7 @@ import { MdMicNone } from "react-icons/md";
 const Image2Code = () => {
   const imgbb_apis = process.env.REACT_APP_IMGBB_API_KEYS.split(",");
   const imgbb_api = imgbb_apis[0].trim();
-  const api_baseurl =
-    window.location.hostname === "localhost"
-      ? process.env.REACT_APP_API_BASEURL_LOCAL
-      : process.env.REACT_APP_API_BASEURL_PRODUCTION;
+  const api_baseurl = process.env.REACT_APP_API_BASEURL;
 
   const [ipAddress, setipAddress] = useState("");
   const [alertMsg, setalertMsg] = useState("");

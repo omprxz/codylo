@@ -4,7 +4,7 @@ import axios from 'axios';
 import './feedback.css';
 
 export default function FeedBack({ setIsFormOpen, isFormOpen, toggleNav }){
-  const api_baseurl = window.location.hostname === "localhost" ? process.env.REACT_APP_API_BASEURL_LOCAL : process.env.REACT_APP_API_BASEURL_PRODUCTION;
+  const api_baseurl = process.env.REACT_APP_API_BASEURL;
   
   const [fbName, setFbName] = useState('')
   const [fbEmail, setFbEmail] = useState('')
