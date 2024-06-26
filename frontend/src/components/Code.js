@@ -7,21 +7,21 @@ import { IoImageOutline } from "react-icons/io5";
 function Code(){
   const tools = [
     {
-      sno: "03",
+      sno: "01",
       name: "AI Image to Code",
       description: "Converts visual designs into HTML, CSS & Javascript Code. It supports wide range of CSS frameworks.",
       icon: IoImageOutline,
       path: "/image2code"
     },
     {
-      sno: "01",
+      sno: "02",
       name: "AI Code Generator",
       description: "Instantly generate code and complex algorithms with AI.",
       icon: RiAiGenerate,
       path: "/generatecode"
     },
     {
-      sno: "02",
+      sno: "03",
       name: "AI Code Bug Fixer",
       description: "Detect and fixes bugs in code, enhancing code quality and speeding up development.",
       icon: MdOutlineAutoFixHigh,
