@@ -56,6 +56,7 @@ const Image2Code = () => {
       behavior: "smooth",
     });
   };
+  
 
   function prettifyHtml(htmlContent) {
     let indent = 0;
@@ -119,7 +120,6 @@ const Image2Code = () => {
       let formData1 = new FormData();
       formData1 = new FormData();
       formData1.append("image", file);
-      formData1.append("key", imgbb_api);
       formData1.append("key", imgbb_api);
       formData1.append("expiration", 30 * 24 * 60 * 60);
 
@@ -361,11 +361,19 @@ const Image2Code = () => {
     setisProcessing(false);
   };
 
+const getAspectHeight = () => {
+  const deviceWidth = window.innerWidth;
+  const width = '385';
+  const height = 667 * deviceWidth / width;
+  console.log(height)
+  return height
+};
+
   return (
     <>
       <div className="relative codeDiv min-h-screen">
       <div className="absolute bg-gradient-to-r from-pink-500 to-purple-500 inset-0 blur-lg opacity-10 min-h-screen"></div>
-      <div className="relative flex flex-col items-center p-2 px-4 gap-3 pb-28">
+      <div className="relative flex flex-col items-center p-2 px-3 gap-3 pb-28">
         {
           <h1 className="font-black my-4 mt-5 text-[1.75rem] text-gray-100 text-center font-mono">
             Convert Image To Code
@@ -533,19 +541,36 @@ const Image2Code = () => {
           </div>
         }
         {code && (
-          <>
-          <h3 className='text-center font-bold text-xl text-green-400'>Task done boss!</h3>
-          <div className="results w-full flex flex-col items-center">
-            <Code_Block
-              initialCode={code}
-              fileName="Generated Code"
-              language="html"
-              hasError={false}
-              showFileName={true}
-            />
-          </div>
-          </>
-        )}
+  <>
+    <h3 className='text-center font-bold text-xl text-green-400'>Task done boss!</h3>
+    <div className="results w-full flex flex-col items-center">
+      <Code_Block
+        initialCode={code}
+        fileName="Generated Code"
+        language="html"
+        hasError={false}
+        showFileName={true}
+      />
+      <div className="bg-black px-2 py-1 rounded-lg w-full max-w-full overflow-x-scroll">
+      <h1 className='text-center my-4 font-bold text-2xl text-gray-200'>Preview</h1>
+  <div
+    className="relative w-full"
+    style={{ height: `${getAspectHeight()}px`, width: '100%', fontSize: '0.8em' }}
+  >
+    <iframe
+      srcDoc={code}
+      style={{
+        width: '100%',
+        height: '100%',
+        border: 'none'
+      }}
+      className="rounded-lg"
+    ></iframe>
+  </div>
+</div>
+    </div>
+  </>
+)}
         {isProcessing && (
           <>
             {" "}
