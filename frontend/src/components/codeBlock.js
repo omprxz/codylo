@@ -55,6 +55,7 @@ const Code_Block = ({ initialCode, fileName = 'Modified Code', language = 'javas
     "React": ".jsx",
     "Angular": ".ts",
     "Vue.js": ".vue",
+    "Next.js": ".js",
     "Django": ".py",
     "Flask": ".py",
     "Laravel": ".php",

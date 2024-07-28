@@ -74,6 +74,7 @@ function FixBug() {
     'mysql': 'sql',
     'node.js': 'javascript',
     'vue.js': 'javascript',
+    'next.js': 'javascript',
     'react': 'javascript',
     'angular': 'javascript',
     'react native': 'javascript',
@@ -215,6 +216,7 @@ function FixBug() {
             <option value="TypeScript">TypeScript</option>
             <option value="Node.js">Node.js</option>
             <option value="React">React</option>
+            <option value="Next.js">Next.js</option>
             <option value="Angular">Angular</option>
             <option value="Vue.js">Vue.js</option>
             <option value="Django">Django</option>

@@ -38,6 +38,7 @@ function GenerateCode() {
     "React": ".jsx",
     "Angular": ".ts",
     "Vue.js": ".vue",
+    "Next.js": ".js",
     "Django": ".py",
     "Flask": ".py",
     "Laravel": ".php",
@@ -244,6 +245,7 @@ function GenerateCode() {
     <option value="TypeScript">TypeScript</option>
     <option value="Node.js">Node.js</option>
     <option value="React">React</option>
+    <option value="Next.js">Next.js</option>
     <option value="Angular">Angular</option>
     <option value="Vue.js">Vue.js</option>
     <option value="Django">Django</option>
