@@ -28,7 +28,6 @@ import Mic from './mic.js';
 import Footer from './Footer';
 
 function FixBug() {
-
   let geminiErr = 0
   const [fixing,
     setFixing] = useState(false)
