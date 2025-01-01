@@ -226,7 +226,7 @@ function GenerateCode() {
       <div className="absolute bg-gradient-to-r from-pink-500 to-purple-500 inset-0 blur-lg opacity-10 min-h-screen"></div>
     <div className='relative flex flex-col align-middle p-2 px-4 gap-4 pb-28'>
     <h1 className="font-black my-4 mt-5 text-3xl text-gray-100 text-center font-mono">AI Code Generator</h1>
-    <select id="language" className="form-select block w-full px-4 py-2.5 mt-1 rounded-md bg-transparent border border-gray-700 text-white focus:outline-none" value={language} onChange={handleLanguage}>
+    <select id="language" className="form-select block w-full px-4 py-2.5 mt-1 rounded-md bg-transparent border border-gray-700 focus:outline-none" value={language} onChange={handleLanguage}>
       <option value="" disabled>Select languages</option>
     <option value="JavaScript">JavaScript</option>
     <option value="Python">Python</option>
